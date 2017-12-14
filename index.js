@@ -1,6 +1,7 @@
 var template = require('./lib/template');
+var md = require('markdown').markdown;
 
 var result = template.story({
-    story: "<p>You find yourself in a dark room.</p>"
+    story: md.toHTML('you find yourself in a *dark* room.')
 });
 console.log(result);
