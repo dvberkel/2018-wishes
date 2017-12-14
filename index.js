@@ -1,10 +1,6 @@
-const Handlebars = require('handlebars');
-const fs = require('fs');
+var template = require('./lib/template');
 
-const template_content = fs.readFileSync('template/story.handlebars');
-const template = Handlebars.compile(template_content.toString());
-
-var result = template({
+var result = template.story({
     story: "<p>You find yourself in a dark room.</p>"
 });
 console.log(result);
