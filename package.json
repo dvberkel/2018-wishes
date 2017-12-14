@@ -1,0 +1,27 @@
+{
+  "name": "2018-wishes",
+  "version": "1.0.0",
+  "description": "Wishes for the year 2018",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dvberkel/2018-wishes.git"
+  },
+  "keywords": [
+    "wish",
+    "new year",
+    "2018"
+  ],
+  "author": "Daan van Berkel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dvberkel/2018-wishes/issues"
+  },
+  "homepage": "https://github.com/dvberkel/2018-wishes#readme"
+}
