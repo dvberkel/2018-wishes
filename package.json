@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/dvberkel/2018-wishes/issues"
   },
-  "homepage": "https://github.com/dvberkel/2018-wishes#readme"
+  "homepage": "https://github.com/dvberkel/2018-wishes#readme",
+  "devDependencies": {
+    "handlebars": "^4.0.11"
+  }
 }
