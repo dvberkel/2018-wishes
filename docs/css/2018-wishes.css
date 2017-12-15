@@ -1,4 +1,7 @@
 body {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 50px 1fr 50px;
     background-color: black;
     background-image: url('../image/GGtauri2.jpg');
     color: green;
@@ -7,7 +10,12 @@ body {
 }
 
 section.content {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
     width: 640px;
     margin-left: auto;
     margin-right: auto;
+    background-color: black;
 }
