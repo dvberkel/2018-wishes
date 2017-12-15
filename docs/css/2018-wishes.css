@@ -1,0 +1,12 @@
+body {
+    background-color: black;
+    color: green;
+    margin: 0;
+    padding: 0;
+}
+
+section.content {
+    width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+}
