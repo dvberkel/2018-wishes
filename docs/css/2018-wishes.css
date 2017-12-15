@@ -1,3 +1,7 @@
+html {
+    --content-border: 10px;
+}
+
 body {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -23,8 +27,10 @@ section.content {
     grid-column-end: 3;
     grid-row-start: 2;
     grid-row-end: 3;
-    width: 640px;
+    width: calc(650px + 2*var(--content-border));
     margin-left: auto;
     margin-right: auto;
+    padding: var(--content-border);
+    border-radius: var(--content-border);
     background-color: black;
 }
