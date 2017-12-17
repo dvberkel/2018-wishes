@@ -1,0 +1,1 @@
+Deze kamer heeft twee deuren
