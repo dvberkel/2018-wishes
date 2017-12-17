@@ -7795,8 +7795,40 @@ var _elm_lang$html$Html$summary = _elm_lang$html$Html$node('summary');
 var _elm_lang$html$Html$menuitem = _elm_lang$html$Html$node('menuitem');
 var _elm_lang$html$Html$menu = _elm_lang$html$Html$node('menu');
 
-var _dummy$dummy$Combination$main = _elm_lang$virtual_dom$Native_VirtualDom.staticProgram(
-	_elm_lang$html$Html$text('Hello, World!'));
+var _dummy$dummy$Combination$subscriptions = function (_p0) {
+	return _elm_lang$core$Platform_Sub$none;
+};
+var _dummy$dummy$Combination$view = function (model) {
+	return _elm_lang$html$Html$text('Hello, World!');
+};
+var _dummy$dummy$Combination$update = F2(
+	function (message, model) {
+		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+	});
+var _dummy$dummy$Combination$init = function (target) {
+	return {
+		ctor: '_Tuple2',
+		_0: {current: 0, target: target},
+		_1: _elm_lang$core$Platform_Cmd$none
+	};
+};
+var _dummy$dummy$Combination$main = _elm_lang$html$Html$program(
+	{
+		init: _dummy$dummy$Combination$init(37),
+		update: _dummy$dummy$Combination$update,
+		view: _dummy$dummy$Combination$view,
+		subscriptions: _dummy$dummy$Combination$subscriptions
+	})();
+var _dummy$dummy$Combination$Model = F2(
+	function (a, b) {
+		return {current: a, target: b};
+	});
+var _dummy$dummy$Combination$Decrease = function (a) {
+	return {ctor: 'Decrease', _0: a};
+};
+var _dummy$dummy$Combination$Increase = function (a) {
+	return {ctor: 'Increase', _0: a};
+};
 
 var Elm = {};
 Elm['Combination'] = Elm['Combination'] || {};
