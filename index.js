@@ -12,7 +12,7 @@ fs.readdir(content_path, function(error, files){
         const source_path = path.join(content_path, file);
         const source = fs.readFileSync(source_path, { encoding: 'utf-8' });
 
-        const [story, links] = source.split('---');
+        const [story, links, scripts] = source.split('---');
 
         var directions = undefined;
         if (links) {
@@ -23,7 +23,8 @@ fs.readdir(content_path, function(error, files){
 
         const content = template.story({
             story: md.toHTML(story),
-            directions: directions
+            directions: directions,
+            scripts: scripts
         });
         const output_file = file.replace('story', 'html');
         const output_path = path.join(docs_path, output_file);
