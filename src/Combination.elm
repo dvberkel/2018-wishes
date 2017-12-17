@@ -7,7 +7,7 @@ import Html.Events as Event
 
 main =
     Html.program
-        { init = init 37
+        { init = init 80
         , update = update
         , view = view
         , subscriptions = subscriptions
@@ -16,44 +16,49 @@ main =
 
 init : Int -> ( Model, Cmd msg )
 init target =
-    ( { current = 0, max_digits = 3, target = target }, Cmd.none )
+    ( { current = 0, max_digits = 3, target = target, message = Nothing }, Cmd.none )
 
 
 type alias Model =
     { current : Int
     , max_digits : Int
     , target : Int
+    , message : Maybe String
     }
 
 
 type Message
     = Increase Int
     | Decrease Int
+    | Check
 
 
 update : Message -> Model -> ( Model, Cmd msg )
 update message model =
-    let
-        next_candidate =
-            case message of
-                Increase position ->
-                    model.current + 10 ^ position
+    case message of
+        Check ->
+            if model.current == model.target then
+                ( { model | message = Just "correct" }, Cmd.none )
+            else
+                ( { model | message = Just "incorrect" }, Cmd.none )
 
-                Decrease position ->
-                    model.current - 10 ^ position
+        Increase position ->
+            ( { model | message = Nothing, current = (model.current + 10 ^ position) % 10 ^ model.max_digits }
+            , Cmd.none
+            )
 
-        next_current =
-            next_candidate % 10 ^ model.max_digits
-
-        next_model =
-            { model | current = next_current }
-    in
-        ( next_model, Cmd.none )
+        Decrease position ->
+            ( { model | message = Nothing, current = (model.current - 10 ^ position) % 10 ^ model.max_digits }
+            , Cmd.none
+            )
 
 
 view : Model -> Html.Html Message
 view model =
     let
+        message =
+            Maybe.withDefault "" model.message
+
         ds =
             model.current
                 |> reversed_digits model.max_digits
@@ -61,7 +66,10 @@ view model =
                 |> List.reverse
     in
         Html.div [ Attribute.class "combination-lock" ]
-            ds
+            [ Html.div [ Attribute.class "message" ] [ Html.text message ]
+            , Html.div [ Attribute.class "digits" ] ds
+            , Html.button [ Event.onClick Check ] [ Html.text "enter" ]
+            ]
 
 
 reversed_digits : Int -> Int -> List Int

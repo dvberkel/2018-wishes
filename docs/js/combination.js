@@ -8275,34 +8275,68 @@ var _dummy$dummy$Combination$reversed_digits = F2(
 	});
 var _dummy$dummy$Combination$update = F2(
 	function (message, model) {
-		var next_candidate = function () {
-			var _p1 = message;
-			if (_p1.ctor === 'Increase') {
-				return model.current + Math.pow(10, _p1._0);
-			} else {
-				return model.current - Math.pow(10, _p1._0);
-			}
-		}();
-		var next_current = A2(
-			_elm_lang$core$Basics_ops['%'],
-			next_candidate,
-			Math.pow(10, model.max_digits));
-		var next_model = _elm_lang$core$Native_Utils.update(
-			model,
-			{current: next_current});
-		return {ctor: '_Tuple2', _0: next_model, _1: _elm_lang$core$Platform_Cmd$none};
+		var _p1 = message;
+		switch (_p1.ctor) {
+			case 'Check':
+				return _elm_lang$core$Native_Utils.eq(model.current, model.target) ? {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							message: _elm_lang$core$Maybe$Just('correct')
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				} : {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							message: _elm_lang$core$Maybe$Just('incorrect')
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Increase':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							message: _elm_lang$core$Maybe$Nothing,
+							current: A2(
+								_elm_lang$core$Basics_ops['%'],
+								model.current + Math.pow(10, _p1._0),
+								Math.pow(10, model.max_digits))
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							message: _elm_lang$core$Maybe$Nothing,
+							current: A2(
+								_elm_lang$core$Basics_ops['%'],
+								model.current - Math.pow(10, _p1._0),
+								Math.pow(10, model.max_digits))
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+		}
 	});
 var _dummy$dummy$Combination$init = function (target) {
 	return {
 		ctor: '_Tuple2',
-		_0: {current: 0, max_digits: 3, target: target},
+		_0: {current: 0, max_digits: 3, target: target, message: _elm_lang$core$Maybe$Nothing},
 		_1: _elm_lang$core$Platform_Cmd$none
 	};
 };
-var _dummy$dummy$Combination$Model = F3(
-	function (a, b, c) {
-		return {current: a, max_digits: b, target: c};
+var _dummy$dummy$Combination$Model = F4(
+	function (a, b, c, d) {
+		return {current: a, max_digits: b, target: c, message: d};
 	});
+var _dummy$dummy$Combination$Check = {ctor: 'Check'};
 var _dummy$dummy$Combination$Decrease = function (a) {
 	return {ctor: 'Decrease', _0: a};
 };
@@ -8382,6 +8416,7 @@ var _dummy$dummy$Combination$view = function (model) {
 			_elm_lang$core$List$indexedMap,
 			_dummy$dummy$Combination$view_digit,
 			A2(_dummy$dummy$Combination$reversed_digits, model.max_digits, model.current)));
+	var message = A2(_elm_lang$core$Maybe$withDefault, '', model.message);
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -8389,11 +8424,52 @@ var _dummy$dummy$Combination$view = function (model) {
 			_0: _elm_lang$html$Html_Attributes$class('combination-lock'),
 			_1: {ctor: '[]'}
 		},
-		ds);
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('message'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(message),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('digits'),
+						_1: {ctor: '[]'}
+					},
+					ds),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$button,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Events$onClick(_dummy$dummy$Combination$Check),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('enter'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
 };
 var _dummy$dummy$Combination$main = _elm_lang$html$Html$program(
 	{
-		init: _dummy$dummy$Combination$init(37),
+		init: _dummy$dummy$Combination$init(80),
 		update: _dummy$dummy$Combination$update,
 		view: _dummy$dummy$Combination$view,
 		subscriptions: _dummy$dummy$Combination$subscriptions
