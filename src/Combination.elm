@@ -3,7 +3,7 @@ module Combination exposing (..)
 import Html
 import Html.Attributes as Attribute
 import Html.Events as Event
-
+import Navigation exposing (load)
 
 main =
     Html.program
@@ -38,7 +38,7 @@ update message model =
     case message of
         Check ->
             if model.current == model.target then
-                ( { model | message = Just "correct" }, Cmd.none )
+                ( { model | message = Just "correct" }, load "two.html" )
             else
                 ( { model | message = Just "incorrect" }, Cmd.none )
 
