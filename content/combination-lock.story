@@ -16,4 +16,5 @@ december 2017?
 
 ---
 
-<!-- scripts -->
+<script src="js/combination.js"></script>
+<script src="js/combination-app.js"></script>
