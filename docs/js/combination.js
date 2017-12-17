@@ -8145,32 +8145,243 @@ var _elm_lang$html$Html_Attributes$classList = function (list) {
 };
 var _elm_lang$html$Html_Attributes$style = _elm_lang$virtual_dom$VirtualDom$style;
 
+var _elm_lang$html$Html_Events$keyCode = A2(_elm_lang$core$Json_Decode$field, 'keyCode', _elm_lang$core$Json_Decode$int);
+var _elm_lang$html$Html_Events$targetChecked = A2(
+	_elm_lang$core$Json_Decode$at,
+	{
+		ctor: '::',
+		_0: 'target',
+		_1: {
+			ctor: '::',
+			_0: 'checked',
+			_1: {ctor: '[]'}
+		}
+	},
+	_elm_lang$core$Json_Decode$bool);
+var _elm_lang$html$Html_Events$targetValue = A2(
+	_elm_lang$core$Json_Decode$at,
+	{
+		ctor: '::',
+		_0: 'target',
+		_1: {
+			ctor: '::',
+			_0: 'value',
+			_1: {ctor: '[]'}
+		}
+	},
+	_elm_lang$core$Json_Decode$string);
+var _elm_lang$html$Html_Events$defaultOptions = _elm_lang$virtual_dom$VirtualDom$defaultOptions;
+var _elm_lang$html$Html_Events$onWithOptions = _elm_lang$virtual_dom$VirtualDom$onWithOptions;
+var _elm_lang$html$Html_Events$on = _elm_lang$virtual_dom$VirtualDom$on;
+var _elm_lang$html$Html_Events$onFocus = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'focus',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onBlur = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'blur',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onSubmitOptions = _elm_lang$core$Native_Utils.update(
+	_elm_lang$html$Html_Events$defaultOptions,
+	{preventDefault: true});
+var _elm_lang$html$Html_Events$onSubmit = function (msg) {
+	return A3(
+		_elm_lang$html$Html_Events$onWithOptions,
+		'submit',
+		_elm_lang$html$Html_Events$onSubmitOptions,
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onCheck = function (tagger) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'change',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetChecked));
+};
+var _elm_lang$html$Html_Events$onInput = function (tagger) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'input',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetValue));
+};
+var _elm_lang$html$Html_Events$onMouseOut = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseout',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseOver = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseover',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseLeave = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseleave',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseEnter = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseenter',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseUp = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseup',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseDown = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mousedown',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onDoubleClick = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'dblclick',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onClick = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'click',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$Options = F2(
+	function (a, b) {
+		return {stopPropagation: a, preventDefault: b};
+	});
+
 var _dummy$dummy$Combination$subscriptions = function (_p0) {
 	return _elm_lang$core$Platform_Sub$none;
 };
-var _dummy$dummy$Combination$digits = F2(
-	function (levels, n) {
-		return _elm_lang$core$List$reverse(
-			A2(_dummy$dummy$Combination$reversed_digits, levels, n));
-	});
 var _dummy$dummy$Combination$reversed_digits = F2(
 	function (levels, n) {
 		if (_elm_lang$core$Native_Utils.eq(levels, 0)) {
 			return {ctor: '[]'};
 		} else {
 			var digit = A2(_elm_lang$core$Basics_ops['%'], n, 10);
-			var suffix = A2(_dummy$dummy$Combination$digits, levels - 1, (n / 10) | 0);
+			var suffix = A2(_dummy$dummy$Combination$reversed_digits, levels - 1, (n / 10) | 0);
 			return {ctor: '::', _0: digit, _1: suffix};
 		}
 	});
+var _dummy$dummy$Combination$update = F2(
+	function (message, model) {
+		var next_candidate = function () {
+			var _p1 = message;
+			if (_p1.ctor === 'Increase') {
+				return model.current + Math.pow(10, _p1._0);
+			} else {
+				return model.current - Math.pow(10, _p1._0);
+			}
+		}();
+		var next_current = A2(
+			_elm_lang$core$Basics_ops['%'],
+			next_candidate,
+			Math.pow(10, model.max_digits));
+		var next_model = _elm_lang$core$Native_Utils.update(
+			model,
+			{current: next_current});
+		return {ctor: '_Tuple2', _0: next_model, _1: _elm_lang$core$Platform_Cmd$none};
+	});
+var _dummy$dummy$Combination$init = function (target) {
+	return {
+		ctor: '_Tuple2',
+		_0: {current: 0, max_digits: 3, target: target},
+		_1: _elm_lang$core$Platform_Cmd$none
+	};
+};
+var _dummy$dummy$Combination$Model = F3(
+	function (a, b, c) {
+		return {current: a, max_digits: b, target: c};
+	});
+var _dummy$dummy$Combination$Decrease = function (a) {
+	return {ctor: 'Decrease', _0: a};
+};
+var _dummy$dummy$Combination$Increase = function (a) {
+	return {ctor: 'Increase', _0: a};
+};
+var _dummy$dummy$Combination$view_digit = F2(
+	function (position, digit) {
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('digit-control'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$span,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('up'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Events$onClick(
+								_dummy$dummy$Combination$Increase(position)),
+							_1: {ctor: '[]'}
+						}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('+'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$span,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('digit'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(
+								_elm_lang$core$Basics$toString(digit)),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$span,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('down'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Events$onClick(
+										_dummy$dummy$Combination$Decrease(position)),
+									_1: {ctor: '[]'}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('-'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}
+			});
+	});
 var _dummy$dummy$Combination$view = function (model) {
-	var ds = A2(
-		_elm_lang$core$List$map,
-		_elm_lang$html$Html$text,
+	var ds = _elm_lang$core$List$reverse(
 		A2(
-			_elm_lang$core$List$map,
-			_elm_lang$core$Basics$toString,
-			A2(_dummy$dummy$Combination$digits, 3, model.current)));
+			_elm_lang$core$List$indexedMap,
+			_dummy$dummy$Combination$view_digit,
+			A2(_dummy$dummy$Combination$reversed_digits, model.max_digits, model.current)));
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -8180,17 +8391,6 @@ var _dummy$dummy$Combination$view = function (model) {
 		},
 		ds);
 };
-var _dummy$dummy$Combination$update = F2(
-	function (message, model) {
-		return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-	});
-var _dummy$dummy$Combination$init = function (target) {
-	return {
-		ctor: '_Tuple2',
-		_0: {current: 0, target: target},
-		_1: _elm_lang$core$Platform_Cmd$none
-	};
-};
 var _dummy$dummy$Combination$main = _elm_lang$html$Html$program(
 	{
 		init: _dummy$dummy$Combination$init(37),
@@ -8198,16 +8398,6 @@ var _dummy$dummy$Combination$main = _elm_lang$html$Html$program(
 		view: _dummy$dummy$Combination$view,
 		subscriptions: _dummy$dummy$Combination$subscriptions
 	})();
-var _dummy$dummy$Combination$Model = F2(
-	function (a, b) {
-		return {current: a, target: b};
-	});
-var _dummy$dummy$Combination$Decrease = function (a) {
-	return {ctor: 'Decrease', _0: a};
-};
-var _dummy$dummy$Combination$Increase = function (a) {
-	return {ctor: 'Increase', _0: a};
-};
 
 var Elm = {};
 Elm['Combination'] = Elm['Combination'] || {};
