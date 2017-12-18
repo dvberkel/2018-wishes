@@ -12,5 +12,5 @@ nog niet was opgevallen was een reeks van cijfers op de muur.
 
 ---
 
-<script src="js/combination.js"></script>
+<script src="js/Combination.js"></script>
 <script src="js/combination-app.js"></script>
