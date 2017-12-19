@@ -1,6 +1,7 @@
 module Logigram exposing (..)
 
 import Html
+import Html.Attributes as Attribute
 import Html.Events as Event
 import FamilyDict
 
@@ -106,7 +107,7 @@ view logigram =
         ds =
             List.map (view_member logigram.current) entries
     in
-        Html.div [] ds
+        Html.div [Attribute.class "logigram"] ds
 
 
 named_cartesian : List a -> List b -> List ( a, List ( a, b ) )
@@ -130,26 +131,33 @@ view_member : FamilyDict.FamilyDict Family Hat -> ( Family, List ( Family, Hat )
 view_member dictionary ( member, hats ) =
     let
         name =
-            Html.span [] [ Html.text (toString member) ]
+            Html.span [ Attribute.class "name" ] [ Html.text (toString member) ]
 
         ds =
             name :: (List.map (view_hat dictionary) hats)
     in
-        Html.div [] ds
+        Html.div [ Attribute.class "hats" ] ds
+
 
 view_hat : FamilyDict.FamilyDict Family Hat -> ( Family, Hat ) -> Html.Html Message
 view_hat dictionary ( member, hat ) =
     let
-        text =
+        chosen =
             case FamilyDict.get member dictionary of
                 Just chosen_hat ->
-                    if chosen_hat == hat then
-                        "check"
-                    else
-                        "."
-                Nothing -> "."
+                    chosen_hat == hat
+
+                Nothing ->
+                    False
     in
-        Html.span [Event.onClick (Wears member hat)] [ Html.text text ]
+        Html.span
+            [ Attribute.classList
+                [ ( "chosen", chosen )
+                , ( "hat", True )
+                ]
+            , Event.onClick (Wears member hat)
+            ]
+            []
 
 
 subscriptions : Logigram -> Sub msg
