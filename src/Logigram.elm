@@ -1,7 +1,7 @@
 module Logigram exposing (..)
 
 import Html
-import Dict
+import Html.Events as Event
 import FamilyDict
 
 
@@ -97,14 +97,14 @@ update message logigram =
                 ( next_model, Cmd.none )
 
 
-view : Logigram -> Html.Html msg
+view : Logigram -> Html.Html Message
 view logigram =
     let
         entries =
             named_cartesian members hats
 
         ds =
-            List.map view_member entries
+            List.map (view_member logigram.current) entries
     in
         Html.div [] ds
 
@@ -126,24 +126,30 @@ named_cartesian xs ys =
         List.map mapper xs
 
 
-view_member : ( Family, List ( Family, Hat ) ) -> Html.Html msg
-view_member ( member, hats ) =
+view_member : FamilyDict.FamilyDict Family Hat -> ( Family, List ( Family, Hat ) ) -> Html.Html Message
+view_member dictionary ( member, hats ) =
     let
         name =
             Html.span [] [ Html.text (toString member) ]
 
         ds =
-            name :: (List.map view_hat hats)
+            name :: (List.map (view_hat dictionary) hats)
     in
         Html.div [] ds
 
-view_hat : ( Family, Hat ) -> Html.Html msg
-view_hat ( member, hat ) =
+view_hat : FamilyDict.FamilyDict Family Hat -> ( Family, Hat ) -> Html.Html Message
+view_hat dictionary ( member, hat ) =
     let
         text =
-            toString hat
+            case FamilyDict.get member dictionary of
+                Just chosen_hat ->
+                    if chosen_hat == hat then
+                        "check"
+                    else
+                        "."
+                Nothing -> "."
     in
-        Html.span [] [ Html.text text ]
+        Html.span [Event.onClick (Wears member hat)] [ Html.text text ]
 
 
 subscriptions : Logigram -> Sub msg
