@@ -141,7 +141,7 @@ view_hat : ( Family, Hat ) -> Html.Html msg
 view_hat ( member, hat ) =
     let
         text =
-            (toString member) ++ "," ++ (toString hat)
+            toString hat
     in
         Html.span [] [ Html.text text ]
 
