@@ -1,6 +1,7 @@
 module Logigram exposing (..)
 
 import Html
+import Dict
 
 
 main =
@@ -14,9 +15,16 @@ type Family
     | Robin
     | Hannah
 
+
 type Hat
     = Red
     | Orange
     | Yellow
     | Green
     | Blue
+
+
+type alias Logigram =
+    { current : Dict.Dict Family Hat
+    , target : Dict.Dict Family Hat
+    }
