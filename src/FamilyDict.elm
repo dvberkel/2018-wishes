@@ -1,4 +1,4 @@
-module FamilyDict exposing (FamilyDict, empty, insert, update)
+module FamilyDict exposing (FamilyDict, empty, insert, update, get)
 
 import Dict
 
@@ -36,3 +36,17 @@ update key update dictionary =
             Dict.update lookup update dictionary.dict
     in
         { dictionary | dict = dict }
+
+
+get : k -> (FamilyDict k v) -> Maybe v
+get key dictionary =
+    let
+        lookup =
+            dictionary.hash key
+
+        result =
+            Dict.get lookup dictionary.dict
+    in
+       result
+
+
