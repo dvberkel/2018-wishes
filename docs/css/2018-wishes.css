@@ -77,3 +77,56 @@ div.combination-lock .digits .digit-control .down {
     font-size: 150%;
     text-align: center;
 }
+
+div.logigram {
+    background: white;
+    color: black;
+}
+
+div.logigram .hats {
+    border-style: solid;
+    border-color: black;
+    border-width: 0 2px 2px 2px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+div.logigram .hats:first-child {
+    border-width: 2px;
+}
+
+div.logigram .hats:nth-of-type(even) {
+    background: gray;
+}
+
+div.logigram .hats:nth-of-type(odd) {
+    background: white;
+}
+
+div.logigram .hats .name {
+    display: inline-block;
+    min-width: 10em;
+}
+
+div.logigram .hats .hat {
+    display: inline-block;
+    min-width: 32px;
+    min-height: 32px;
+    height: 100%;
+    color: green;
+    border-color: black;
+    border-style: solid;
+    border-width: 0 1px;
+}
+
+div.logigram .hats .hat.chosen:before {
+    content: "✓";
+    min-width: 32px;
+    min-height: 32px;
+    position: relative;
+    left: 10px;
+    top: 6px;
+}
