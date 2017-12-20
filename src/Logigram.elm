@@ -107,7 +107,7 @@ view logigram =
         ds =
             List.map (view_member logigram.current) entries
     in
-        Html.div [Attribute.class "logigram"] ds
+        Html.div [ Attribute.class "logigram" ] (header :: ds)
 
 
 named_cartesian : List a -> List b -> List ( a, List ( a, b ) )
@@ -125,6 +125,21 @@ named_cartesian xs ys =
             ( x, pair x )
     in
         List.map mapper xs
+
+
+header : Html.Html msg
+header =
+    let
+        dummy =
+            Html.span [ Attribute.class "dummy" ] []
+
+        hs =
+            List.map view_hat_name hats
+
+        ds =
+            dummy :: hs
+    in
+        Html.div [ Attribute.class "header" ] ds
 
 
 view_member : FamilyDict.FamilyDict Family Hat -> ( Family, List ( Family, Hat ) ) -> Html.Html Message
@@ -158,6 +173,11 @@ view_hat dictionary ( member, hat ) =
             , Event.onClick (Wears member hat)
             ]
             []
+
+
+view_hat_name : Hat -> Html.Html msg
+view_hat_name hat =
+    Html.span [ Attribute.class "hat-name" ] [ Html.text (toString hat) ]
 
 
 subscriptions : Logigram -> Sub msg

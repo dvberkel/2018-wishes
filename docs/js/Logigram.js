@@ -8293,6 +8293,21 @@ var _elm_lang$html$Html_Events$Options = F2(
 var _dummy$dummy$Logigram$subscriptions = function (_p0) {
 	return _elm_lang$core$Platform_Sub$none;
 };
+var _dummy$dummy$Logigram$view_hat_name = function (hat) {
+	return A2(
+		_elm_lang$html$Html$span,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('hat-name'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(
+				_elm_lang$core$Basics$toString(hat)),
+			_1: {ctor: '[]'}
+		});
+};
 var _dummy$dummy$Logigram$named_cartesian = F2(
 	function (xs, ys) {
 		var combine = F2(
@@ -8401,6 +8416,26 @@ var _dummy$dummy$Logigram$hats = {
 		}
 	}
 };
+var _dummy$dummy$Logigram$header = function () {
+	var hs = A2(_elm_lang$core$List$map, _dummy$dummy$Logigram$view_hat_name, _dummy$dummy$Logigram$hats);
+	var dummy = A2(
+		_elm_lang$html$Html$span,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('dummy'),
+			_1: {ctor: '[]'}
+		},
+		{ctor: '[]'});
+	var ds = {ctor: '::', _0: dummy, _1: hs};
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('header'),
+			_1: {ctor: '[]'}
+		},
+		ds);
+}();
 var _dummy$dummy$Logigram$init = function () {
 	var target = A3(
 		_dummy$dummy$FamilyDict$insert,
@@ -8514,7 +8549,7 @@ var _dummy$dummy$Logigram$view = function (logigram) {
 			_0: _elm_lang$html$Html_Attributes$class('logigram'),
 			_1: {ctor: '[]'}
 		},
-		ds);
+		{ctor: '::', _0: _dummy$dummy$Logigram$header, _1: ds});
 };
 var _dummy$dummy$Logigram$main = _elm_lang$html$Html$program(
 	{
