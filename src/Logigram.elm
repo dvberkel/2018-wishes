@@ -3,6 +3,7 @@ module Logigram exposing (..)
 import Html
 import Html.Attributes as Attribute
 import Html.Events as Event
+import Navigation exposing (load)
 import FamilyDict
 
 
@@ -101,16 +102,25 @@ update message logigram =
 
         Check ->
             let
+                is_solved =
+                    solved logigram
+
                 next_message =
-                    if solved logigram then
+                    if is_solved then
                         Just "Correct"
                     else
                         Just "Incorrect"
 
                 next_model =
                     { logigram | message = next_message }
+
+                next_command =
+                    if is_solved then
+                        load "celebrate.html"
+                    else
+                        Cmd.none
             in
-                ( next_model, Cmd.none )
+                ( next_model, next_command )
 
 
 solved : Logigram -> Bool
@@ -133,9 +143,9 @@ view logigram =
             named_cartesian members hats
 
         ds =
-            button ::
-            header ::
-            (List.map (view_member logigram.current) entries)
+            button
+                :: header
+                :: (List.map (view_member logigram.current) entries)
     in
         Html.div [ Attribute.class "logigram" ] ds
 
