@@ -8336,18 +8336,9 @@ var _dummy$dummy$Logigram$named_cartesian = F2(
 		};
 		return A2(_elm_lang$core$List$map, mapper, xs);
 	});
-var _dummy$dummy$Logigram$update = F2(
-	function (message, logigram) {
-		var _p1 = message;
-		var next_current = A3(_dummy$dummy$FamilyDict$insert, _p1._0, _p1._1, logigram.current);
-		var next_model = _elm_lang$core$Native_Utils.update(
-			logigram,
-			{current: next_current});
-		return {ctor: '_Tuple2', _0: next_model, _1: _elm_lang$core$Platform_Cmd$none};
-	});
 var _dummy$dummy$Logigram$family_hash = function (member) {
-	var _p2 = member;
-	switch (_p2.ctor) {
+	var _p1 = member;
+	switch (_p1.ctor) {
 		case 'Daan':
 			return 0;
 		case 'Marlies':
@@ -8360,9 +8351,9 @@ var _dummy$dummy$Logigram$family_hash = function (member) {
 			return 4;
 	}
 };
-var _dummy$dummy$Logigram$Logigram = F2(
-	function (a, b) {
-		return {current: a, target: b};
+var _dummy$dummy$Logigram$Logigram = F3(
+	function (a, b, c) {
+		return {current: a, target: b, message: c};
 	});
 var _dummy$dummy$Logigram$Hannah = {ctor: 'Hannah'};
 var _dummy$dummy$Logigram$Robin = {ctor: 'Robin'};
@@ -8390,6 +8381,31 @@ var _dummy$dummy$Logigram$members = {
 		}
 	}
 };
+var _dummy$dummy$Logigram$solved = function (logigram) {
+	var correct_hats = function (member) {
+		return _elm_lang$core$Native_Utils.eq(
+			A2(_dummy$dummy$FamilyDict$get, member, logigram.current),
+			A2(_dummy$dummy$FamilyDict$get, member, logigram.target));
+	};
+	return A2(_elm_lang$core$List$all, correct_hats, _dummy$dummy$Logigram$members);
+};
+var _dummy$dummy$Logigram$update = F2(
+	function (message, logigram) {
+		var _p2 = message;
+		if (_p2.ctor === 'Wears') {
+			var next_current = A3(_dummy$dummy$FamilyDict$insert, _p2._0, _p2._1, logigram.current);
+			var next_model = _elm_lang$core$Native_Utils.update(
+				logigram,
+				{current: next_current});
+			return {ctor: '_Tuple2', _0: next_model, _1: _elm_lang$core$Platform_Cmd$none};
+		} else {
+			var next_message = _dummy$dummy$Logigram$solved(logigram) ? _elm_lang$core$Maybe$Just('Correct') : _elm_lang$core$Maybe$Just('Incorrect');
+			var next_model = _elm_lang$core$Native_Utils.update(
+				logigram,
+				{message: next_message});
+			return {ctor: '_Tuple2', _0: next_model, _1: _elm_lang$core$Platform_Cmd$none};
+		}
+	});
 var _dummy$dummy$Logigram$Blauw = {ctor: 'Blauw'};
 var _dummy$dummy$Logigram$Groen = {ctor: 'Groen'};
 var _dummy$dummy$Logigram$Geel = {ctor: 'Geel'};
@@ -8460,9 +8476,52 @@ var _dummy$dummy$Logigram$init = function () {
 						_dummy$dummy$FamilyDict$empty(_dummy$dummy$Logigram$family_hash))))));
 	return {
 		current: _dummy$dummy$FamilyDict$empty(_dummy$dummy$Logigram$family_hash),
-		target: target
+		target: target,
+		message: _elm_lang$core$Maybe$Nothing
 	};
 }();
+var _dummy$dummy$Logigram$Check = {ctor: 'Check'};
+var _dummy$dummy$Logigram$check = function (logigram) {
+	var message = A2(_elm_lang$core$Maybe$withDefault, '', logigram.message);
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('check'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$button,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Events$onClick(_dummy$dummy$Logigram$Check),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('enter'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$span,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('message'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(message),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			}
+		});
+};
 var _dummy$dummy$Logigram$Wears = F2(
 	function (a, b) {
 		return {ctor: 'Wears', _0: a, _1: b};
@@ -8538,10 +8597,19 @@ var _dummy$dummy$Logigram$view_member = F2(
 	});
 var _dummy$dummy$Logigram$view = function (logigram) {
 	var entries = A2(_dummy$dummy$Logigram$named_cartesian, _dummy$dummy$Logigram$members, _dummy$dummy$Logigram$hats);
-	var ds = A2(
-		_elm_lang$core$List$map,
-		_dummy$dummy$Logigram$view_member(logigram.current),
-		entries);
+	var button = _dummy$dummy$Logigram$check(logigram);
+	var ds = {
+		ctor: '::',
+		_0: button,
+		_1: {
+			ctor: '::',
+			_0: _dummy$dummy$Logigram$header,
+			_1: A2(
+				_elm_lang$core$List$map,
+				_dummy$dummy$Logigram$view_member(logigram.current),
+				entries)
+		}
+	};
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -8549,7 +8617,7 @@ var _dummy$dummy$Logigram$view = function (logigram) {
 			_0: _elm_lang$html$Html_Attributes$class('logigram'),
 			_1: {ctor: '[]'}
 		},
-		{ctor: '::', _0: _dummy$dummy$Logigram$header, _1: ds});
+		ds);
 };
 var _dummy$dummy$Logigram$main = _elm_lang$html$Html$program(
 	{

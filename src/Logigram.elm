@@ -63,6 +63,7 @@ hats =
 type alias Logigram =
     { current : FamilyDict.FamilyDict Family Hat
     , target : FamilyDict.FamilyDict Family Hat
+    , message : Maybe String
     }
 
 
@@ -77,11 +78,12 @@ init =
                 |> FamilyDict.insert Robin Groen
                 |> FamilyDict.insert Hannah Blauw
     in
-        { current = FamilyDict.empty family_hash, target = target }
+        { current = FamilyDict.empty family_hash, target = target, message = Nothing }
 
 
 type Message
     = Wears Family Hat
+    | Check
 
 
 update : Message -> Logigram -> ( Logigram, Cmd msg )
@@ -97,17 +99,60 @@ update message logigram =
             in
                 ( next_model, Cmd.none )
 
+        Check ->
+            let
+                next_message =
+                    if solved logigram then
+                        Just "Correct"
+                    else
+                        Just "Incorrect"
+
+                next_model =
+                    { logigram | message = next_message }
+            in
+                ( next_model, Cmd.none )
+
+
+solved : Logigram -> Bool
+solved logigram =
+    let
+        correct_hats : Family -> Bool
+        correct_hats member =
+            FamilyDict.get member logigram.current == FamilyDict.get member logigram.target
+    in
+        List.all correct_hats members
+
 
 view : Logigram -> Html.Html Message
 view logigram =
     let
+        button =
+            check logigram
+
         entries =
             named_cartesian members hats
 
         ds =
-            List.map (view_member logigram.current) entries
+            button ::
+            header ::
+            (List.map (view_member logigram.current) entries)
     in
-        Html.div [ Attribute.class "logigram" ] (header :: ds)
+        Html.div [ Attribute.class "logigram" ] ds
+
+
+check : Logigram -> Html.Html Message
+check logigram =
+    let
+        message =
+            Maybe.withDefault "" logigram.message
+    in
+        Html.div [ Attribute.class "check" ]
+            [ Html.button [ Event.onClick Check ]
+                [ Html.text "enter" ]
+            , Html.span
+                [ Attribute.class "message" ]
+                [ Html.text message ]
+            ]
 
 
 named_cartesian : List a -> List b -> List ( a, List ( a, b ) )
