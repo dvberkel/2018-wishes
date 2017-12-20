@@ -48,16 +48,16 @@ members =
 
 
 type Hat
-    = Red
-    | Orange
-    | Yellow
-    | Green
-    | Blue
+    = Rood
+    | Oranje
+    | Geel
+    | Groen
+    | Blauw
 
 
 hats : List Hat
 hats =
-    [ Red, Orange, Yellow, Green, Blue ]
+    [ Rood, Oranje, Geel, Groen, Blauw ]
 
 
 type alias Logigram =
@@ -71,11 +71,11 @@ init =
     let
         target =
             FamilyDict.empty family_hash
-                |> FamilyDict.insert Daan Red
-                |> FamilyDict.insert Marlies Orange
-                |> FamilyDict.insert Sophie Yellow
-                |> FamilyDict.insert Robin Green
-                |> FamilyDict.insert Hannah Blue
+                |> FamilyDict.insert Daan Rood
+                |> FamilyDict.insert Marlies Oranje
+                |> FamilyDict.insert Sophie Geel
+                |> FamilyDict.insert Robin Groen
+                |> FamilyDict.insert Hannah Blauw
     in
         { current = FamilyDict.empty family_hash, target = target }
 

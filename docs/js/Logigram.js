@@ -8390,26 +8390,26 @@ var _dummy$dummy$Logigram$members = {
 		}
 	}
 };
-var _dummy$dummy$Logigram$Blue = {ctor: 'Blue'};
-var _dummy$dummy$Logigram$Green = {ctor: 'Green'};
-var _dummy$dummy$Logigram$Yellow = {ctor: 'Yellow'};
-var _dummy$dummy$Logigram$Orange = {ctor: 'Orange'};
-var _dummy$dummy$Logigram$Red = {ctor: 'Red'};
+var _dummy$dummy$Logigram$Blauw = {ctor: 'Blauw'};
+var _dummy$dummy$Logigram$Groen = {ctor: 'Groen'};
+var _dummy$dummy$Logigram$Geel = {ctor: 'Geel'};
+var _dummy$dummy$Logigram$Oranje = {ctor: 'Oranje'};
+var _dummy$dummy$Logigram$Rood = {ctor: 'Rood'};
 var _dummy$dummy$Logigram$hats = {
 	ctor: '::',
-	_0: _dummy$dummy$Logigram$Red,
+	_0: _dummy$dummy$Logigram$Rood,
 	_1: {
 		ctor: '::',
-		_0: _dummy$dummy$Logigram$Orange,
+		_0: _dummy$dummy$Logigram$Oranje,
 		_1: {
 			ctor: '::',
-			_0: _dummy$dummy$Logigram$Yellow,
+			_0: _dummy$dummy$Logigram$Geel,
 			_1: {
 				ctor: '::',
-				_0: _dummy$dummy$Logigram$Green,
+				_0: _dummy$dummy$Logigram$Groen,
 				_1: {
 					ctor: '::',
-					_0: _dummy$dummy$Logigram$Blue,
+					_0: _dummy$dummy$Logigram$Blauw,
 					_1: {ctor: '[]'}
 				}
 			}
@@ -8440,23 +8440,23 @@ var _dummy$dummy$Logigram$init = function () {
 	var target = A3(
 		_dummy$dummy$FamilyDict$insert,
 		_dummy$dummy$Logigram$Hannah,
-		_dummy$dummy$Logigram$Blue,
+		_dummy$dummy$Logigram$Blauw,
 		A3(
 			_dummy$dummy$FamilyDict$insert,
 			_dummy$dummy$Logigram$Robin,
-			_dummy$dummy$Logigram$Green,
+			_dummy$dummy$Logigram$Groen,
 			A3(
 				_dummy$dummy$FamilyDict$insert,
 				_dummy$dummy$Logigram$Sophie,
-				_dummy$dummy$Logigram$Yellow,
+				_dummy$dummy$Logigram$Geel,
 				A3(
 					_dummy$dummy$FamilyDict$insert,
 					_dummy$dummy$Logigram$Marlies,
-					_dummy$dummy$Logigram$Orange,
+					_dummy$dummy$Logigram$Oranje,
 					A3(
 						_dummy$dummy$FamilyDict$insert,
 						_dummy$dummy$Logigram$Daan,
-						_dummy$dummy$Logigram$Red,
+						_dummy$dummy$Logigram$Rood,
 						_dummy$dummy$FamilyDict$empty(_dummy$dummy$Logigram$family_hash))))));
 	return {
 		current: _dummy$dummy$FamilyDict$empty(_dummy$dummy$Logigram$family_hash),
