@@ -73,11 +73,11 @@ init =
     let
         target =
             FamilyDict.empty family_hash
-                |> FamilyDict.insert Daan Rood
-                |> FamilyDict.insert Marlies Oranje
-                |> FamilyDict.insert Sophie Geel
-                |> FamilyDict.insert Robin Groen
-                |> FamilyDict.insert Hannah Blauw
+                |> FamilyDict.insert Daan Geel
+                |> FamilyDict.insert Marlies Blauw
+                |> FamilyDict.insert Sophie Oranje
+                |> FamilyDict.insert Robin Rood
+                |> FamilyDict.insert Hannah Groen
     in
         { current = FamilyDict.empty family_hash, target = target, message = Nothing }
 

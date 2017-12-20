@@ -9462,23 +9462,23 @@ var _dummy$dummy$Logigram$init = function () {
 	var target = A3(
 		_dummy$dummy$FamilyDict$insert,
 		_dummy$dummy$Logigram$Hannah,
-		_dummy$dummy$Logigram$Blauw,
+		_dummy$dummy$Logigram$Groen,
 		A3(
 			_dummy$dummy$FamilyDict$insert,
 			_dummy$dummy$Logigram$Robin,
-			_dummy$dummy$Logigram$Groen,
+			_dummy$dummy$Logigram$Rood,
 			A3(
 				_dummy$dummy$FamilyDict$insert,
 				_dummy$dummy$Logigram$Sophie,
-				_dummy$dummy$Logigram$Geel,
+				_dummy$dummy$Logigram$Oranje,
 				A3(
 					_dummy$dummy$FamilyDict$insert,
 					_dummy$dummy$Logigram$Marlies,
-					_dummy$dummy$Logigram$Oranje,
+					_dummy$dummy$Logigram$Blauw,
 					A3(
 						_dummy$dummy$FamilyDict$insert,
 						_dummy$dummy$Logigram$Daan,
-						_dummy$dummy$Logigram$Rood,
+						_dummy$dummy$Logigram$Geel,
 						_dummy$dummy$FamilyDict$empty(_dummy$dummy$Logigram$family_hash))))));
 	return {
 		current: _dummy$dummy$FamilyDict$empty(_dummy$dummy$Logigram$family_hash),
