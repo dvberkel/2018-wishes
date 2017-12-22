@@ -7795,12 +7795,18 @@ var _elm_lang$html$Html$summary = _elm_lang$html$Html$node('summary');
 var _elm_lang$html$Html$menuitem = _elm_lang$html$Html$node('menuitem');
 var _elm_lang$html$Html$menu = _elm_lang$html$Html$node('menu');
 
+var _dummy$dummy$Robot$isEmpty = function (stack) {
+	return _elm_lang$core$List$isEmpty(stack.program);
+};
 var _dummy$dummy$Robot$main = _elm_lang$virtual_dom$Native_VirtualDom.staticProgram(
 	_elm_lang$html$Html$text('Hello, World!'));
 var _dummy$dummy$Robot$Robot = F2(
 	function (a, b) {
 		return {heading: a, position: b};
 	});
+var _dummy$dummy$Robot$ProgramStack = function (a) {
+	return {program: a};
+};
 var _dummy$dummy$Robot$West = {ctor: 'West'};
 var _dummy$dummy$Robot$South = {ctor: 'South'};
 var _dummy$dummy$Robot$East = {ctor: 'East'};
@@ -7812,10 +7818,73 @@ var _dummy$dummy$Robot$Repeat = F2(
 var _dummy$dummy$Robot$Sequence = function (a) {
 	return {ctor: 'Sequence', _0: a};
 };
+var _dummy$dummy$Robot$Primitive = function (a) {
+	return {ctor: 'Primitive', _0: a};
+};
 var _dummy$dummy$Robot$Right = {ctor: 'Right'};
 var _dummy$dummy$Robot$Left = {ctor: 'Left'};
 var _dummy$dummy$Robot$Move = {ctor: 'Move'};
 var _dummy$dummy$Robot$Idle = {ctor: 'Idle'};
+var _dummy$dummy$Robot$pop = function (stack) {
+	pop:
+	while (true) {
+		if (_dummy$dummy$Robot$isEmpty(stack)) {
+			return {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: stack};
+		} else {
+			var t = _elm_lang$core$List$tail(stack.program);
+			var tail = A2(
+				_elm_lang$core$Maybe$withDefault,
+				{ctor: '[]'},
+				t);
+			var head = _elm_lang$core$List$head(stack.program);
+			var candidate = A2(
+				_elm_lang$core$Maybe$withDefault,
+				_dummy$dummy$Robot$Primitive(_dummy$dummy$Robot$Idle),
+				head);
+			var _p0 = candidate;
+			switch (_p0.ctor) {
+				case 'Primitive':
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Maybe$Just(_p0._0),
+						_1: {program: tail}
+					};
+				case 'Sequence':
+					var next_stack = {
+						program: A2(_elm_lang$core$List$append, _p0._0, tail)
+					};
+					var _v1 = next_stack;
+					stack = _v1;
+					continue pop;
+				default:
+					var _p2 = _p0._1;
+					var _p1 = _p0._0;
+					if (_elm_lang$core$Native_Utils.cmp(_p1, 0) > 0) {
+						var header = {
+							ctor: '::',
+							_0: _p2,
+							_1: {
+								ctor: '::',
+								_0: A2(_dummy$dummy$Robot$Repeat, _p1 - 1, _p2),
+								_1: {ctor: '[]'}
+							}
+						};
+						var next_stack = {
+							program: A2(_elm_lang$core$List$append, header, tail)
+						};
+						var _v2 = next_stack;
+						stack = _v2;
+						continue pop;
+					} else {
+						var next_stack = {program: tail};
+						var _v3 = next_stack;
+						stack = _v3;
+						continue pop;
+					}
+			}
+		}
+	}
+};
 
 var Elm = {};
 Elm['Robot'] = Elm['Robot'] || {};
