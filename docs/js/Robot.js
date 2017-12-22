@@ -7795,6 +7795,12 @@ var _elm_lang$html$Html$summary = _elm_lang$html$Html$node('summary');
 var _elm_lang$html$Html$menuitem = _elm_lang$html$Html$node('menuitem');
 var _elm_lang$html$Html$menu = _elm_lang$html$Html$node('menu');
 
+var _dummy$dummy$Robot$push = F2(
+	function (program, stack) {
+		return {
+			program: {ctor: '::', _0: program, _1: stack.program}
+		};
+	});
 var _dummy$dummy$Robot$isEmpty = function (stack) {
 	return _elm_lang$core$List$isEmpty(stack.program);
 };
