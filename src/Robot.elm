@@ -1,11 +1,5 @@
 module Robot exposing (..)
 
-import Html
-
-
-main =
-    Html.text "Hello, World!"
-
 
 type alias Robot =
     { heading : Heading
@@ -101,7 +95,7 @@ push program stack =
 
 load : Program -> ( Robot, ProgramStack )
 load program =
-    ({ heading = North, position = ( 0, 0 ) }, { program = List.singleton program })
+    ( { heading = North, position = ( 0, 0 ) }, { program = List.singleton program } )
 
 
 act : Action -> Robot -> Robot
@@ -131,13 +125,21 @@ act action robot =
             in
                 { robot | heading = heading }
 
+
 delta : Heading -> Position
 delta h =
     case h of
-        North -> (0, 1)
-        East -> (1, 0)
-        South -> (0, -1)
-        West -> (-1, 0)
+        North ->
+            ( 0, 1 )
+
+        East ->
+            ( 1, 0 )
+
+        South ->
+            ( 0, -1 )
+
+        West ->
+            ( -1, 0 )
 
 
 add : Position -> Position -> Position
@@ -178,13 +180,17 @@ turnRight h =
 
 
 step : ( Robot, ProgramStack ) -> ( Robot, ProgramStack )
-step (robot, stack) =
+step ( robot, stack ) =
     let
-        (candidate, next_stack) = pop stack
+        ( candidate, next_stack ) =
+            pop stack
 
         next_robot =
             case candidate of
-                Just action -> act action robot
-                Nothing -> robot
+                Just action ->
+                    act action robot
+
+                Nothing ->
+                    robot
     in
-        (next_robot, next_stack)
+        ( next_robot, next_stack )
