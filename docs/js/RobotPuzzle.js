@@ -4183,6 +4183,7 @@ var _dummy$dummy$Robot$Robot = F2(
 var _dummy$dummy$Robot$ProgramStack = function (a) {
 	return {program: a};
 };
+var _dummy$dummy$Robot$Goal = {ctor: 'Goal'};
 var _dummy$dummy$Robot$Wall = {ctor: 'Wall'};
 var _dummy$dummy$Robot$Free = {ctor: 'Free'};
 var _dummy$dummy$Robot$getOccupation = F2(
@@ -4196,10 +4197,13 @@ var _dummy$dummy$Robot$toOccupation = F3(
 	function (y, x, $char) {
 		var occupation = function () {
 			var _p13 = $char;
-			if (_p13.valueOf() === '#') {
-				return _dummy$dummy$Robot$Wall;
-			} else {
-				return _dummy$dummy$Robot$Free;
+			switch (_p13.valueOf()) {
+				case '#':
+					return _dummy$dummy$Robot$Wall;
+				case 'G':
+					return _dummy$dummy$Robot$Goal;
+				default:
+					return _dummy$dummy$Robot$Free;
 			}
 		}();
 		return {ctor: '_Tuple3', _0: x, _1: y, _2: occupation};
@@ -4269,16 +4273,16 @@ var _dummy$dummy$Robot$act = F3(
 				var change = _dummy$dummy$Robot$delta(robot.heading);
 				var candidate = A2(_dummy$dummy$Robot$add, robot.position, change);
 				var _p17 = A2(_dummy$dummy$Robot$getOccupation, world, candidate);
-				if (_p17.ctor === 'Free') {
+				if (_p17.ctor === 'Wall') {
+					return _elm_lang$core$Native_Utils.update(
+						robot,
+						{heading: heading});
+				} else {
 					return _elm_lang$core$Native_Utils.update(
 						robot,
 						{
 							position: A2(_dummy$dummy$Robot$add, robot.position, change)
 						});
-				} else {
-					return _elm_lang$core$Native_Utils.update(
-						robot,
-						{heading: heading});
 				}
 			case 'Left':
 				var heading = _dummy$dummy$Robot$turnLeft(robot.heading);

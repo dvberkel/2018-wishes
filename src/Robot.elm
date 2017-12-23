@@ -24,6 +24,7 @@ position_hash ( x, y ) =
 type Occupation
     = Free
     | Wall
+    | Goal
 
 
 type alias Robot =
@@ -97,6 +98,9 @@ toOccupation y x char =
             case char of
                 '#' ->
                     Wall
+
+                'G' ->
+                    Goal
 
                 _ ->
                     Free
@@ -209,11 +213,12 @@ act world action robot =
                     turnLeft robot.heading
             in
                 case getOccupation world candidate of
-                    Free ->
-                        { robot | position = add robot.position change }
-
                     Wall ->
                         { robot | heading = heading }
+
+                    _ ->
+                        { robot | position = add robot.position change }
+
 
         Left ->
             let
