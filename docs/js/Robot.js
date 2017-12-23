@@ -4143,6 +4143,23 @@ var _dummy$dummy$Robot$push = F2(
 var _dummy$dummy$Robot$isEmpty = function (stack) {
 	return _elm_lang$core$List$isEmpty(stack.program);
 };
+var _dummy$dummy$Robot$filler = F2(
+	function (_p5, world) {
+		var _p6 = _p5;
+		return A3(
+			_dummy$dummy$CustomDict$insert,
+			{ctor: '_Tuple2', _0: _p6._0, _1: _p6._1},
+			_p6._2,
+			world);
+	});
+var _dummy$dummy$Robot$position_hash = function (_p7) {
+	var _p8 = _p7;
+	return (1997 * _p8._0) + _p8._1;
+};
+var _dummy$dummy$Robot$fill = function (occupations) {
+	var emptyWorld = _dummy$dummy$CustomDict$empty(_dummy$dummy$Robot$position_hash);
+	return A3(_elm_lang$core$List$foldl, _dummy$dummy$Robot$filler, emptyWorld, occupations);
+};
 var _dummy$dummy$Robot$Robot = F2(
 	function (a, b) {
 		return {heading: a, position: b};
@@ -4159,6 +4176,32 @@ var _dummy$dummy$Robot$getOccupation = F2(
 			_dummy$dummy$Robot$Free,
 			A2(_dummy$dummy$CustomDict$get, position, world));
 	});
+var _dummy$dummy$Robot$toOccupation = F3(
+	function (y, x, $char) {
+		var occupation = function () {
+			var _p9 = $char;
+			if (_p9.valueOf() === '#') {
+				return _dummy$dummy$Robot$Wall;
+			} else {
+				return _dummy$dummy$Robot$Free;
+			}
+		}();
+		return {ctor: '_Tuple3', _0: x, _1: y, _2: occupation};
+	});
+var _dummy$dummy$Robot$toOccupationLine = F2(
+	function (y, line) {
+		return A2(
+			_elm_lang$core$List$indexedMap,
+			_dummy$dummy$Robot$toOccupation(y),
+			line);
+	});
+var _dummy$dummy$Robot$parse = function (input) {
+	var lines = _elm_lang$core$String$lines(input);
+	var characters = A2(_elm_lang$core$List$map, _elm_lang$core$String$toList, lines);
+	var occupation_lines = A2(_elm_lang$core$List$indexedMap, _dummy$dummy$Robot$toOccupationLine, characters);
+	var occupations = _elm_lang$core$List$concat(occupation_lines);
+	return _dummy$dummy$Robot$fill(occupations);
+};
 var _dummy$dummy$Robot$West = {ctor: 'West'};
 var _dummy$dummy$Robot$South = {ctor: 'South'};
 var _dummy$dummy$Robot$East = {ctor: 'East'};
@@ -4176,8 +4219,8 @@ var _dummy$dummy$Robot$load = function (program) {
 	};
 };
 var _dummy$dummy$Robot$turnLeft = function (h) {
-	var _p5 = h;
-	switch (_p5.ctor) {
+	var _p10 = h;
+	switch (_p10.ctor) {
 		case 'North':
 			return _dummy$dummy$Robot$West;
 		case 'East':
@@ -4189,8 +4232,8 @@ var _dummy$dummy$Robot$turnLeft = function (h) {
 	}
 };
 var _dummy$dummy$Robot$turnRight = function (h) {
-	var _p6 = h;
-	switch (_p6.ctor) {
+	var _p11 = h;
+	switch (_p11.ctor) {
 		case 'North':
 			return _dummy$dummy$Robot$East;
 		case 'East':
@@ -4203,16 +4246,16 @@ var _dummy$dummy$Robot$turnRight = function (h) {
 };
 var _dummy$dummy$Robot$act = F3(
 	function (world, action, robot) {
-		var _p7 = action;
-		switch (_p7.ctor) {
+		var _p12 = action;
+		switch (_p12.ctor) {
 			case 'Idle':
 				return robot;
 			case 'Move':
 				var heading = _dummy$dummy$Robot$turnLeft(robot.heading);
 				var change = _dummy$dummy$Robot$delta(robot.heading);
 				var candidate = A2(_dummy$dummy$Robot$add, robot.position, change);
-				var _p8 = A2(_dummy$dummy$Robot$getOccupation, world, candidate);
-				if (_p8.ctor === 'Free') {
+				var _p13 = A2(_dummy$dummy$Robot$getOccupation, world, candidate);
+				if (_p13.ctor === 'Free') {
 					return _elm_lang$core$Native_Utils.update(
 						robot,
 						{
@@ -4265,44 +4308,44 @@ var _dummy$dummy$Robot$pop = function (stack) {
 				_elm_lang$core$Maybe$withDefault,
 				_dummy$dummy$Robot$Primitive(_dummy$dummy$Robot$Idle),
 				head);
-			var _p9 = candidate;
-			switch (_p9.ctor) {
+			var _p14 = candidate;
+			switch (_p14.ctor) {
 				case 'Primitive':
 					return {
 						ctor: '_Tuple2',
-						_0: _elm_lang$core$Maybe$Just(_p9._0),
+						_0: _elm_lang$core$Maybe$Just(_p14._0),
 						_1: {program: tail}
 					};
 				case 'Sequence':
 					var next_stack = {
-						program: A2(_elm_lang$core$List$append, _p9._0, tail)
+						program: A2(_elm_lang$core$List$append, _p14._0, tail)
 					};
-					var _v8 = next_stack;
-					stack = _v8;
+					var _v11 = next_stack;
+					stack = _v11;
 					continue pop;
 				default:
-					var _p11 = _p9._1;
-					var _p10 = _p9._0;
-					if (_elm_lang$core$Native_Utils.cmp(_p10, 0) > 0) {
+					var _p16 = _p14._1;
+					var _p15 = _p14._0;
+					if (_elm_lang$core$Native_Utils.cmp(_p15, 0) > 0) {
 						var header = {
 							ctor: '::',
-							_0: _p11,
+							_0: _p16,
 							_1: {
 								ctor: '::',
-								_0: A2(_dummy$dummy$Robot$Repeat, _p10 - 1, _p11),
+								_0: A2(_dummy$dummy$Robot$Repeat, _p15 - 1, _p16),
 								_1: {ctor: '[]'}
 							}
 						};
 						var next_stack = {
 							program: A2(_elm_lang$core$List$append, header, tail)
 						};
-						var _v9 = next_stack;
-						stack = _v9;
+						var _v12 = next_stack;
+						stack = _v12;
 						continue pop;
 					} else {
 						var next_stack = {program: tail};
-						var _v10 = next_stack;
-						stack = _v10;
+						var _v13 = next_stack;
+						stack = _v13;
 						continue pop;
 					}
 			}
@@ -4310,18 +4353,18 @@ var _dummy$dummy$Robot$pop = function (stack) {
 	}
 };
 var _dummy$dummy$Robot$step = F2(
-	function (world, _p12) {
-		var _p13 = _p12;
-		var _p16 = _p13._0;
-		var _p14 = _dummy$dummy$Robot$pop(_p13._1);
-		var candidate = _p14._0;
-		var next_stack = _p14._1;
+	function (world, _p17) {
+		var _p18 = _p17;
+		var _p21 = _p18._0;
+		var _p19 = _dummy$dummy$Robot$pop(_p18._1);
+		var candidate = _p19._0;
+		var next_stack = _p19._1;
 		var next_robot = function () {
-			var _p15 = candidate;
-			if (_p15.ctor === 'Just') {
-				return A3(_dummy$dummy$Robot$act, world, _p15._0, _p16);
+			var _p20 = candidate;
+			if (_p20.ctor === 'Just') {
+				return A3(_dummy$dummy$Robot$act, world, _p20._0, _p21);
 			} else {
-				return _p16;
+				return _p21;
 			}
 		}();
 		return {ctor: '_Tuple2', _0: next_robot, _1: next_stack};

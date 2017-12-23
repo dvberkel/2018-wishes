@@ -4,7 +4,6 @@ import Dict
 import CustomDict
 
 
-
 type alias World =
     CustomDict.CustomDict Position Occupation
 
@@ -52,7 +51,64 @@ type alias ProgramStack =
 getOccupation : World -> Position -> Occupation
 getOccupation world position =
     CustomDict.get position world
-    |> Maybe.withDefault Free
+        |> Maybe.withDefault Free
+
+
+parse : String -> World
+parse input =
+    let
+        lines =
+            String.lines input
+
+        characters =
+            List.map String.toList lines
+
+        occupation_lines =
+            List.indexedMap toOccupationLine characters
+
+        occupations =
+            List.concat occupation_lines
+    in
+        fill occupations
+
+
+toOccupationLine : Int -> List Char -> List ( Int, Int, Occupation )
+toOccupationLine y line =
+    List.indexedMap (toOccupation y) line
+
+
+toOccupation : Int -> Int -> Char -> ( Int, Int, Occupation )
+toOccupation y x char =
+    let
+        occupation =
+            case char of
+                '#' ->
+                    Wall
+
+                _ ->
+                    Free
+    in
+        ( x, y, occupation )
+
+
+fill : List ( Int, Int, Occupation ) -> World
+fill occupations =
+    let
+        emptyWorld =
+            CustomDict.empty position_hash
+    in
+        List.foldl filler emptyWorld occupations
+
+
+position_hash : Position -> Int
+position_hash ( x, y ) =
+    1997 * x + y
+
+
+filler : ( Int, Int, Occupation ) -> World -> World
+filler ( x, y, occupation ) world =
+    CustomDict.insert ( x, y ) occupation world
+
 
 isEmpty : ProgramStack -> Bool
 isEmpty stack =

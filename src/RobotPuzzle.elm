@@ -24,11 +24,6 @@ init program =
     )
 
 
-position_hash : Position -> Int
-position_hash ( x, y ) =
-    1997 * x + y
-
-
 type alias Model =
     { state : ( Robot, ProgramStack )
     , world : World
