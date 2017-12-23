@@ -123,7 +123,8 @@ viewWorldPosition model y x =
             [ Attribute.classList
                 [ ( "position", True )
                 , ( toString occupation, True )
-                , ( "robot-" ++ (toString robot.heading), position == robot_position )
+                , ( "robot", position == robot_position )
+                , ( toString robot.heading, position == robot_position )
                 ]
             ]
             []

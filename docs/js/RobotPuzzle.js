@@ -8588,13 +8588,18 @@ var _dummy$dummy$RobotPuzzle$viewWorldPosition = F3(
 								ctor: '::',
 								_0: {
 									ctor: '_Tuple2',
-									_0: A2(
-										_elm_lang$core$Basics_ops['++'],
-										'robot-',
-										_elm_lang$core$Basics$toString(robot.heading)),
+									_0: 'robot',
 									_1: _elm_lang$core$Native_Utils.eq(position, robot_position)
 								},
-								_1: {ctor: '[]'}
+								_1: {
+									ctor: '::',
+									_0: {
+										ctor: '_Tuple2',
+										_0: _elm_lang$core$Basics$toString(robot.heading),
+										_1: _elm_lang$core$Native_Utils.eq(position, robot_position)
+									},
+									_1: {ctor: '[]'}
+								}
 							}
 						}
 					}),
