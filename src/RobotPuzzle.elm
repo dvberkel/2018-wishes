@@ -121,9 +121,9 @@ viewWorldPosition model y x =
     in
         Html.span
             [ Attribute.classList
-                [ ( "Position", True )
+                [ ( "position", True )
                 , ( toString occupation, True )
-                , ( "Robot-" ++ (toString robot.heading), position == robot_position )
+                , ( "robot-" ++ (toString robot.heading), position == robot_position )
                 ]
             ]
             []

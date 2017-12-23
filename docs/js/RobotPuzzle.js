@@ -8576,7 +8576,7 @@ var _dummy$dummy$RobotPuzzle$viewWorldPosition = F3(
 				_0: _elm_lang$html$Html_Attributes$classList(
 					{
 						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: 'Position', _1: true},
+						_0: {ctor: '_Tuple2', _0: 'position', _1: true},
 						_1: {
 							ctor: '::',
 							_0: {
@@ -8590,7 +8590,7 @@ var _dummy$dummy$RobotPuzzle$viewWorldPosition = F3(
 									ctor: '_Tuple2',
 									_0: A2(
 										_elm_lang$core$Basics_ops['++'],
-										'Robot-',
+										'robot-',
 										_elm_lang$core$Basics$toString(robot.heading)),
 									_1: _elm_lang$core$Native_Utils.eq(position, robot_position)
 								},
