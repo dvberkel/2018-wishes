@@ -4152,6 +4152,13 @@ var _dummy$dummy$Robot$ProgramStack = function (a) {
 };
 var _dummy$dummy$Robot$Wall = {ctor: 'Wall'};
 var _dummy$dummy$Robot$Free = {ctor: 'Free'};
+var _dummy$dummy$Robot$getOccupation = F2(
+	function (world, position) {
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			_dummy$dummy$Robot$Free,
+			A2(_dummy$dummy$FamilyDict$get, position, world));
+	});
 var _dummy$dummy$Robot$West = {ctor: 'West'};
 var _dummy$dummy$Robot$South = {ctor: 'South'};
 var _dummy$dummy$Robot$East = {ctor: 'East'};

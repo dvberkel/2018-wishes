@@ -3,12 +3,15 @@ module Robot exposing (..)
 import Dict
 import FamilyDict
 
+
 type alias World =
     FamilyDict.FamilyDict Position Occupation
+
 
 type Occupation
     = Free
     | Wall
+
 
 type alias Robot =
     { heading : Heading
@@ -25,8 +28,6 @@ type Heading
 
 type alias Position =
     ( Int, Int )
-
-
 
 
 type Program
@@ -46,6 +47,11 @@ type alias ProgramStack =
     { program : List Program
     }
 
+
+getOccupation : World -> Position -> Occupation
+getOccupation world position =
+    FamilyDict.get position world
+    |> Maybe.withDefault Free
 
 isEmpty : ProgramStack -> Bool
 isEmpty stack =
@@ -205,5 +211,3 @@ step ( robot, stack ) =
                     robot
     in
         ( next_robot, next_stack )
-
-
