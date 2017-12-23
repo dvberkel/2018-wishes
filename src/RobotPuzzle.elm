@@ -17,7 +17,18 @@ main =
 init : Robot.Program -> ( Model, Cmd Message )
 init program =
     ( { state = load program
-      , world = emptyWorld
+      , world = """################################################
+#                                              #
+#                                              #
+#                                              #
+#                                              #
+#                                              #
+#                                              #
+#                                              #
+#                                              #
+#                                              #
+################################################
+""" |> parse
       }
     , Cmd.none
     )
