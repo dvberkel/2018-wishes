@@ -1,6 +1,6 @@
 html {
     --content-border: 10px;
-    --robot-cell-size: 11px;
+    --robot-cell-size: 13px;
 }
 
 body {
@@ -146,12 +146,17 @@ div .world {
 }
 
 div .world .row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     margin: 0;
     padding: 0;
 }
 
 div .world .row .position {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
     min-width: var(--robot-cell-size);
     min-height: var(--robot-cell-size);
     width: var(--robot-cell-size);
@@ -169,7 +174,6 @@ div .world .row:first-child .position:first-child {
 
 div .world .row:first-child .position {
     border-width: 1px 1px 1px 0;
-
 }
 
 div .world .row .position:first-child {
@@ -183,4 +187,5 @@ div .world .row .position.Wall {
 div .world .row .position.robot {
     background-color: blue;
     color: white;
+    font-size: 75%;
 }
