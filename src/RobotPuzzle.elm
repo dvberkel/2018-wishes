@@ -2,28 +2,36 @@ module RobotPuzzle exposing (..)
 
 import Html
 import Html.Events as Event
+import CustomDict exposing (empty)
 import Robot exposing (..)
 
 
 main =
     Html.program
-        { init = init (Repeat 4 (Sequence [Repeat 2 (Primitive Move), Primitive Left]))
+        { init = init (Repeat 4 (Sequence [ Repeat 2 (Primitive Move), Primitive Left ]))
         , update = update
         , view = view
         , subscriptions = subscriptions
         }
 
 
-init : Robot.Program -> ( Model, Cmd Message)
+init : Robot.Program -> ( Model, Cmd Message )
 init program =
     ( { state = load program
+      , world = CustomDict.empty position_hash
       }
     , Cmd.none
     )
 
 
+position_hash : Position -> Int
+position_hash ( x, y ) =
+    1997 * x + y
+
+
 type alias Model =
     { state : ( Robot, ProgramStack )
+    , world : World
     }
 
 
@@ -31,15 +39,15 @@ type Message
     = Step
 
 
-update : Message -> Model -> ( Model, Cmd Message)
+update : Message -> Model -> ( Model, Cmd Message )
 update message model =
     case message of
         Step ->
             let
                 next_state =
-                    step model.state
+                    step model.world model.state
             in
-                ({ model | state = next_state }, Cmd.none)
+                ( { model | state = next_state }, Cmd.none )
 
 
 view : Model -> Html.Html Message

@@ -116,8 +116,8 @@ load program =
     ( { heading = North, position = ( 0, 0 ) }, { program = List.singleton program } )
 
 
-act : Action -> Robot -> Robot
-act action robot =
+act : World -> Action -> Robot -> Robot
+act world action robot =
     case action of
         Idle ->
             robot
@@ -126,8 +126,19 @@ act action robot =
             let
                 change =
                     delta robot.heading
+
+                candidate =
+                    add robot.position change
+
+                heading =
+                    turnLeft robot.heading
             in
-                { robot | position = add robot.position change }
+                case getOccupation world candidate of
+                    Free ->
+                        { robot | position = add robot.position change }
+
+                    Wall ->
+                        { robot | heading = heading }
 
         Left ->
             let
@@ -197,8 +208,8 @@ turnRight h =
             North
 
 
-step : ( Robot, ProgramStack ) -> ( Robot, ProgramStack )
-step ( robot, stack ) =
+step : World -> ( Robot, ProgramStack ) -> ( Robot, ProgramStack )
+step world ( robot, stack ) =
     let
         ( candidate, next_stack ) =
             pop stack
@@ -206,7 +217,7 @@ step ( robot, stack ) =
         next_robot =
             case candidate of
                 Just action ->
-                    act action robot
+                    act world action robot
 
                 Nothing ->
                     robot

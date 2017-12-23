@@ -4201,19 +4201,28 @@ var _dummy$dummy$Robot$turnRight = function (h) {
 			return _dummy$dummy$Robot$North;
 	}
 };
-var _dummy$dummy$Robot$act = F2(
-	function (action, robot) {
+var _dummy$dummy$Robot$act = F3(
+	function (world, action, robot) {
 		var _p7 = action;
 		switch (_p7.ctor) {
 			case 'Idle':
 				return robot;
 			case 'Move':
+				var heading = _dummy$dummy$Robot$turnLeft(robot.heading);
 				var change = _dummy$dummy$Robot$delta(robot.heading);
-				return _elm_lang$core$Native_Utils.update(
-					robot,
-					{
-						position: A2(_dummy$dummy$Robot$add, robot.position, change)
-					});
+				var candidate = A2(_dummy$dummy$Robot$add, robot.position, change);
+				var _p8 = A2(_dummy$dummy$Robot$getOccupation, world, candidate);
+				if (_p8.ctor === 'Free') {
+					return _elm_lang$core$Native_Utils.update(
+						robot,
+						{
+							position: A2(_dummy$dummy$Robot$add, robot.position, change)
+						});
+				} else {
+					return _elm_lang$core$Native_Utils.update(
+						robot,
+						{heading: heading});
+				}
 			case 'Left':
 				var heading = _dummy$dummy$Robot$turnLeft(robot.heading);
 				return _elm_lang$core$Native_Utils.update(
@@ -4256,66 +4265,67 @@ var _dummy$dummy$Robot$pop = function (stack) {
 				_elm_lang$core$Maybe$withDefault,
 				_dummy$dummy$Robot$Primitive(_dummy$dummy$Robot$Idle),
 				head);
-			var _p8 = candidate;
-			switch (_p8.ctor) {
+			var _p9 = candidate;
+			switch (_p9.ctor) {
 				case 'Primitive':
 					return {
 						ctor: '_Tuple2',
-						_0: _elm_lang$core$Maybe$Just(_p8._0),
+						_0: _elm_lang$core$Maybe$Just(_p9._0),
 						_1: {program: tail}
 					};
 				case 'Sequence':
 					var next_stack = {
-						program: A2(_elm_lang$core$List$append, _p8._0, tail)
+						program: A2(_elm_lang$core$List$append, _p9._0, tail)
 					};
-					var _v7 = next_stack;
-					stack = _v7;
+					var _v8 = next_stack;
+					stack = _v8;
 					continue pop;
 				default:
-					var _p10 = _p8._1;
-					var _p9 = _p8._0;
-					if (_elm_lang$core$Native_Utils.cmp(_p9, 0) > 0) {
+					var _p11 = _p9._1;
+					var _p10 = _p9._0;
+					if (_elm_lang$core$Native_Utils.cmp(_p10, 0) > 0) {
 						var header = {
 							ctor: '::',
-							_0: _p10,
+							_0: _p11,
 							_1: {
 								ctor: '::',
-								_0: A2(_dummy$dummy$Robot$Repeat, _p9 - 1, _p10),
+								_0: A2(_dummy$dummy$Robot$Repeat, _p10 - 1, _p11),
 								_1: {ctor: '[]'}
 							}
 						};
 						var next_stack = {
 							program: A2(_elm_lang$core$List$append, header, tail)
 						};
-						var _v8 = next_stack;
-						stack = _v8;
+						var _v9 = next_stack;
+						stack = _v9;
 						continue pop;
 					} else {
 						var next_stack = {program: tail};
-						var _v9 = next_stack;
-						stack = _v9;
+						var _v10 = next_stack;
+						stack = _v10;
 						continue pop;
 					}
 			}
 		}
 	}
 };
-var _dummy$dummy$Robot$step = function (_p11) {
-	var _p12 = _p11;
-	var _p15 = _p12._0;
-	var _p13 = _dummy$dummy$Robot$pop(_p12._1);
-	var candidate = _p13._0;
-	var next_stack = _p13._1;
-	var next_robot = function () {
-		var _p14 = candidate;
-		if (_p14.ctor === 'Just') {
-			return A2(_dummy$dummy$Robot$act, _p14._0, _p15);
-		} else {
-			return _p15;
-		}
-	}();
-	return {ctor: '_Tuple2', _0: next_robot, _1: next_stack};
-};
+var _dummy$dummy$Robot$step = F2(
+	function (world, _p12) {
+		var _p13 = _p12;
+		var _p16 = _p13._0;
+		var _p14 = _dummy$dummy$Robot$pop(_p13._1);
+		var candidate = _p14._0;
+		var next_stack = _p14._1;
+		var next_robot = function () {
+			var _p15 = candidate;
+			if (_p15.ctor === 'Just') {
+				return A3(_dummy$dummy$Robot$act, world, _p15._0, _p16);
+			} else {
+				return _p16;
+			}
+		}();
+		return {ctor: '_Tuple2', _0: next_robot, _1: next_stack};
+	});
 
 var Elm = {};
 Elm['Robot'] = Elm['Robot'] || {};
