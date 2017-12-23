@@ -7,7 +7,7 @@ import Robot exposing (..)
 
 main =
     Html.program
-        { init = init (Repeat 4 (Sequence [ Repeat 2 (Primitive Move), Primitive Left ]))
+        { init = init (Repeat 4 (Primitive Move))
         , update = update
         , view = view
         , subscriptions = subscriptions
@@ -16,7 +16,7 @@ main =
 
 init : Robot.Program -> ( Model, Cmd Message )
 init program =
-    ( { state = load program
+    ( { state = load (1,1) program
       , world = """################################################
 #                                              #
 #                                              #
@@ -58,8 +58,8 @@ update message model =
 view : Model -> Html.Html Message
 view model =
     Html.div []
-        [ Html.span [] [ Html.text (toString model.state) ]
-        , Html.button [ Event.onClick Step ] [ Html.text ">" ]
+        [ Html.button [ Event.onClick Step ] [ Html.text ">" ]
+        , Html.span [] [ Html.text (toString model.state) ]
         ]
 
 

@@ -186,9 +186,9 @@ push program stack =
     { program = program :: stack.program }
 
 
-load : Program -> ( Robot, ProgramStack )
-load program =
-    ( { heading = North, position = ( 0, 0 ) }, { program = List.singleton program } )
+load : Position -> Program -> ( Robot, ProgramStack )
+load position program =
+    ( { heading = North, position = position }, { program = List.singleton program } )
 
 
 act : World -> Action -> Robot -> Robot
@@ -234,13 +234,13 @@ delta : Heading -> Position
 delta h =
     case h of
         North ->
-            ( 0, 1 )
+            ( 0, -1 )
 
         East ->
             ( 1, 0 )
 
         South ->
-            ( 0, -1 )
+            ( 0, 1 )
 
         West ->
             ( -1, 0 )

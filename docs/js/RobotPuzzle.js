@@ -4125,11 +4125,11 @@ var _dummy$dummy$Robot$delta = function (h) {
 	var _p4 = h;
 	switch (_p4.ctor) {
 		case 'North':
-			return {ctor: '_Tuple2', _0: 0, _1: 1};
+			return {ctor: '_Tuple2', _0: 0, _1: -1};
 		case 'East':
 			return {ctor: '_Tuple2', _0: 1, _1: 0};
 		case 'South':
-			return {ctor: '_Tuple2', _0: 0, _1: -1};
+			return {ctor: '_Tuple2', _0: 0, _1: 1};
 		default:
 			return {ctor: '_Tuple2', _0: -1, _1: 0};
 	}
@@ -4222,18 +4222,16 @@ var _dummy$dummy$Robot$West = {ctor: 'West'};
 var _dummy$dummy$Robot$South = {ctor: 'South'};
 var _dummy$dummy$Robot$East = {ctor: 'East'};
 var _dummy$dummy$Robot$North = {ctor: 'North'};
-var _dummy$dummy$Robot$load = function (program) {
-	return {
-		ctor: '_Tuple2',
-		_0: {
-			heading: _dummy$dummy$Robot$North,
-			position: {ctor: '_Tuple2', _0: 0, _1: 0}
-		},
-		_1: {
-			program: _elm_lang$core$List$singleton(program)
-		}
-	};
-};
+var _dummy$dummy$Robot$load = F2(
+	function (position, program) {
+		return {
+			ctor: '_Tuple2',
+			_0: {heading: _dummy$dummy$Robot$North, position: position},
+			_1: {
+				program: _elm_lang$core$List$singleton(program)
+			}
+		};
+	});
 var _dummy$dummy$Robot$turnLeft = function (h) {
 	var _p14 = h;
 	switch (_p14.ctor) {
@@ -8230,8 +8228,11 @@ var _dummy$dummy$RobotPuzzle$init = function (program) {
 	return {
 		ctor: '_Tuple2',
 		_0: {
-			state: _dummy$dummy$Robot$load(program),
-			world: _dummy$dummy$Robot$emptyWorld
+			state: A2(
+				_dummy$dummy$Robot$load,
+				{ctor: '_Tuple2', _0: 1, _1: 1},
+				program),
+			world: _dummy$dummy$Robot$parse('################################################\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n################################################\n')
 		},
 		_1: _elm_lang$core$Platform_Cmd$none
 	};
@@ -8248,26 +8249,26 @@ var _dummy$dummy$RobotPuzzle$view = function (model) {
 		{
 			ctor: '::',
 			_0: A2(
-				_elm_lang$html$Html$span,
-				{ctor: '[]'},
+				_elm_lang$html$Html$button,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text(
-						_elm_lang$core$Basics$toString(model.state)),
+					_0: _elm_lang$html$Html_Events$onClick(_dummy$dummy$RobotPuzzle$Step),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('>'),
 					_1: {ctor: '[]'}
 				}),
 			_1: {
 				ctor: '::',
 				_0: A2(
-					_elm_lang$html$Html$button,
+					_elm_lang$html$Html$span,
+					{ctor: '[]'},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Events$onClick(_dummy$dummy$RobotPuzzle$Step),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text('>'),
+						_0: _elm_lang$html$Html$text(
+							_elm_lang$core$Basics$toString(model.state)),
 						_1: {ctor: '[]'}
 					}),
 				_1: {ctor: '[]'}
@@ -8280,19 +8281,7 @@ var _dummy$dummy$RobotPuzzle$main = _elm_lang$html$Html$program(
 			A2(
 				_dummy$dummy$Robot$Repeat,
 				4,
-				_dummy$dummy$Robot$Sequence(
-					{
-						ctor: '::',
-						_0: A2(
-							_dummy$dummy$Robot$Repeat,
-							2,
-							_dummy$dummy$Robot$Primitive(_dummy$dummy$Robot$Move)),
-						_1: {
-							ctor: '::',
-							_0: _dummy$dummy$Robot$Primitive(_dummy$dummy$Robot$Left),
-							_1: {ctor: '[]'}
-						}
-					}))),
+				_dummy$dummy$Robot$Primitive(_dummy$dummy$Robot$Move))),
 		update: _dummy$dummy$RobotPuzzle$update,
 		view: _dummy$dummy$RobotPuzzle$view,
 		subscriptions: _dummy$dummy$RobotPuzzle$subscriptions

@@ -4125,11 +4125,11 @@ var _dummy$dummy$Robot$delta = function (h) {
 	var _p4 = h;
 	switch (_p4.ctor) {
 		case 'North':
-			return {ctor: '_Tuple2', _0: 0, _1: 1};
+			return {ctor: '_Tuple2', _0: 0, _1: -1};
 		case 'East':
 			return {ctor: '_Tuple2', _0: 1, _1: 0};
 		case 'South':
-			return {ctor: '_Tuple2', _0: 0, _1: -1};
+			return {ctor: '_Tuple2', _0: 0, _1: 1};
 		default:
 			return {ctor: '_Tuple2', _0: -1, _1: 0};
 	}
@@ -4222,18 +4222,16 @@ var _dummy$dummy$Robot$West = {ctor: 'West'};
 var _dummy$dummy$Robot$South = {ctor: 'South'};
 var _dummy$dummy$Robot$East = {ctor: 'East'};
 var _dummy$dummy$Robot$North = {ctor: 'North'};
-var _dummy$dummy$Robot$load = function (program) {
-	return {
-		ctor: '_Tuple2',
-		_0: {
-			heading: _dummy$dummy$Robot$North,
-			position: {ctor: '_Tuple2', _0: 0, _1: 0}
-		},
-		_1: {
-			program: _elm_lang$core$List$singleton(program)
-		}
-	};
-};
+var _dummy$dummy$Robot$load = F2(
+	function (position, program) {
+		return {
+			ctor: '_Tuple2',
+			_0: {heading: _dummy$dummy$Robot$North, position: position},
+			_1: {
+				program: _elm_lang$core$List$singleton(program)
+			}
+		};
+	});
 var _dummy$dummy$Robot$turnLeft = function (h) {
 	var _p14 = h;
 	switch (_p14.ctor) {
