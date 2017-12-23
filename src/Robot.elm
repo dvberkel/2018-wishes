@@ -1,11 +1,12 @@
 module Robot exposing (..)
 
 import Dict
-import FamilyDict
+import CustomDict
+
 
 
 type alias World =
-    FamilyDict.FamilyDict Position Occupation
+    CustomDict.CustomDict Position Occupation
 
 
 type Occupation
@@ -50,7 +51,7 @@ type alias ProgramStack =
 
 getOccupation : World -> Position -> Occupation
 getOccupation world position =
-    FamilyDict.get position world
+    CustomDict.get position world
     |> Maybe.withDefault Free
 
 isEmpty : ProgramStack -> Bool

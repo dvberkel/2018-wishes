@@ -4,7 +4,7 @@ import Html
 import Html.Attributes as Attribute
 import Html.Events as Event
 import Navigation exposing (load)
-import FamilyDict
+import CustomDict
 
 
 main =
@@ -62,8 +62,8 @@ hats =
 
 
 type alias Logigram =
-    { current : FamilyDict.FamilyDict Family Hat
-    , target : FamilyDict.FamilyDict Family Hat
+    { current : CustomDict.CustomDict Family Hat
+    , target : CustomDict.CustomDict Family Hat
     , message : Maybe String
     }
 
@@ -72,14 +72,14 @@ init : Logigram
 init =
     let
         target =
-            FamilyDict.empty family_hash
-                |> FamilyDict.insert Daan Geel
-                |> FamilyDict.insert Marlies Blauw
-                |> FamilyDict.insert Sophie Oranje
-                |> FamilyDict.insert Robin Rood
-                |> FamilyDict.insert Hannah Groen
+            CustomDict.empty family_hash
+                |> CustomDict.insert Daan Geel
+                |> CustomDict.insert Marlies Blauw
+                |> CustomDict.insert Sophie Oranje
+                |> CustomDict.insert Robin Rood
+                |> CustomDict.insert Hannah Groen
     in
-        { current = FamilyDict.empty family_hash, target = target, message = Nothing }
+        { current = CustomDict.empty family_hash, target = target, message = Nothing }
 
 
 type Message
@@ -93,7 +93,7 @@ update message logigram =
         Wears member color ->
             let
                 next_current =
-                    FamilyDict.insert member color logigram.current
+                    CustomDict.insert member color logigram.current
 
                 next_model =
                     { logigram | current = next_current }
@@ -128,7 +128,7 @@ solved logigram =
     let
         correct_hats : Family -> Bool
         correct_hats member =
-            FamilyDict.get member logigram.current == FamilyDict.get member logigram.target
+            CustomDict.get member logigram.current == CustomDict.get member logigram.target
     in
         List.all correct_hats members
 
@@ -197,7 +197,7 @@ header =
         Html.div [ Attribute.class "header" ] ds
 
 
-view_member : FamilyDict.FamilyDict Family Hat -> ( Family, List ( Family, Hat ) ) -> Html.Html Message
+view_member : CustomDict.CustomDict Family Hat -> ( Family, List ( Family, Hat ) ) -> Html.Html Message
 view_member dictionary ( member, hats ) =
     let
         name =
@@ -209,11 +209,11 @@ view_member dictionary ( member, hats ) =
         Html.div [ Attribute.class "hats" ] ds
 
 
-view_hat : FamilyDict.FamilyDict Family Hat -> ( Family, Hat ) -> Html.Html Message
+view_hat : CustomDict.CustomDict Family Hat -> ( Family, Hat ) -> Html.Html Message
 view_hat dictionary ( member, hat ) =
     let
         chosen =
-            case FamilyDict.get member dictionary of
+            case CustomDict.get member dictionary of
                 Just chosen_hat ->
                     chosen_hat == hat
 

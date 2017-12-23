@@ -1,20 +1,20 @@
-module FamilyDict exposing (FamilyDict, empty, insert, update, get)
+module CustomDict exposing (CustomDict, empty, insert, update, get)
 
 import Dict
 
 
-type alias FamilyDict k v =
+type alias CustomDict k v =
     { hash : k -> Int
     , dict : Dict.Dict Int v
     }
 
 
-empty : (k -> Int) -> FamilyDict k v
+empty : (k -> Int) -> CustomDict k v
 empty hash =
     { hash = hash, dict = Dict.empty }
 
 
-insert : k -> v -> FamilyDict k v -> FamilyDict k v
+insert : k -> v -> CustomDict k v -> CustomDict k v
 insert key value dictionary =
     let
         lookup =
@@ -26,7 +26,7 @@ insert key value dictionary =
         { dictionary | dict = dict }
 
 
-update : k -> (Maybe v -> Maybe v) -> FamilyDict k v -> FamilyDict k v
+update : k -> (Maybe v -> Maybe v) -> CustomDict k v -> CustomDict k v
 update key update dictionary =
     let
         lookup =
@@ -38,7 +38,7 @@ update key update dictionary =
         { dictionary | dict = dict }
 
 
-get : k -> (FamilyDict k v) -> Maybe v
+get : k -> (CustomDict k v) -> Maybe v
 get key dictionary =
     let
         lookup =
