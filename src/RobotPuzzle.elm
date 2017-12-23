@@ -3,6 +3,7 @@ module RobotPuzzle exposing (..)
 import Html
 import Html.Attributes as Attribute
 import Html.Events as Event
+import Time exposing (Time, millisecond, every)
 import Navigation
 import Robot exposing (..)
 
@@ -18,7 +19,8 @@ main =
 
 init : Robot.Program -> ( Model, Cmd Message )
 init program =
-    ( { state = load ( 1, 1 ) program
+    ( { run = False
+      , state = load ( 1, 1 ) program
       , world = """################################################
 #                                              #
 #                                              #
@@ -37,18 +39,27 @@ init program =
 
 
 type alias Model =
-    { state : ( Robot, ProgramStack )
+    { run : Bool
+    , state : ( Robot, ProgramStack )
     , world : World
     }
 
 
 type Message
     = Step
+    | Idle
+    | Toggle
 
 
 update : Message -> Model -> ( Model, Cmd Message )
 update message model =
     case message of
+        Idle ->
+            ( model, Cmd.none )
+
+        Toggle ->
+            ( { model | run = not model.run }, Cmd.none )
+
         Step ->
             let
                 next_state =
@@ -73,8 +84,15 @@ update message model =
 
 view : Model -> Html.Html Message
 view model =
+    let
+        runText =
+            if model.run then
+                "||"
+            else
+                ">"
+    in
     Html.div []
-        [ Html.button [ Event.onClick Step ] [ Html.text ">" ]
+        [ Html.button [ Event.onClick Toggle ] [ Html.text runText ]
         , Html.span [] [ Html.text (toString model.state) ]
         , viewWorld model
         ]
@@ -161,6 +179,13 @@ viewWorldPosition model y x =
             [ Html.text representation ]
 
 
-subscriptions : Model -> Sub msg
-subscriptions _ =
-    Sub.none
+subscriptions : Model -> Sub Message
+subscriptions model =
+    every (100 * millisecond) (takeStep model)
+
+takeStep : Model -> Time -> Message
+takeStep model _ =
+    if model.run then
+        Step
+    else
+        Idle
