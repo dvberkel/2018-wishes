@@ -2,7 +2,6 @@ module RobotPuzzle exposing (..)
 
 import Html
 import Html.Events as Event
-import CustomDict exposing (empty)
 import Robot exposing (..)
 
 
@@ -18,7 +17,7 @@ main =
 init : Robot.Program -> ( Model, Cmd Message )
 init program =
     ( { state = load program
-      , world = CustomDict.empty position_hash
+      , world = emptyWorld
       }
     , Cmd.none
     )

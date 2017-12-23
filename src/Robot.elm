@@ -1,11 +1,24 @@
 module Robot exposing (..)
 
-import Dict
 import CustomDict
 
 
 type alias World =
-    CustomDict.CustomDict Position Occupation
+    { occupations : CustomDict.CustomDict Position Occupation
+    , bounding_box : Position
+    }
+
+
+emptyWorld : World
+emptyWorld =
+    { occupations = CustomDict.empty position_hash
+    , bounding_box = ( 0, 0 )
+    }
+
+
+position_hash : Position -> Int
+position_hash ( x, y ) =
+    1997 * x + y
 
 
 type Occupation
@@ -50,7 +63,7 @@ type alias ProgramStack =
 
 getOccupation : World -> Position -> Occupation
 getOccupation world position =
-    CustomDict.get position world
+    CustomDict.get position world.occupations
         |> Maybe.withDefault Free
 
 
@@ -93,21 +106,27 @@ toOccupation y x char =
 
 fill : List ( Int, Int, Occupation ) -> World
 fill occupations =
-    let
-        emptyWorld =
-            CustomDict.empty position_hash
-    in
-        List.foldl filler emptyWorld occupations
-
-
-position_hash : Position -> Int
-position_hash ( x, y ) =
-    1997 * x + y
+    List.foldl filler emptyWorld occupations
 
 
 filler : ( Int, Int, Occupation ) -> World -> World
 filler ( x, y, occupation ) world =
-    CustomDict.insert ( x, y ) occupation world
+    let
+        position =
+            ( x, y )
+
+        occupations =
+            CustomDict.insert position occupation world.occupations
+
+        bounding_box =
+            max_bounding_box position world.bounding_box
+    in
+        { occupations = occupations, bounding_box = bounding_box }
+
+
+max_bounding_box : Position -> Position -> Position
+max_bounding_box ( x, y ) ( u, v ) =
+    ( max x u, max y v )
 
 
 isEmpty : ProgramStack -> Bool
