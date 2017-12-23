@@ -1,5 +1,14 @@
 module Robot exposing (..)
 
+import Dict
+import FamilyDict
+
+type alias World =
+    FamilyDict.FamilyDict Position Occupation
+
+type Occupation
+    = Free
+    | Wall
 
 type alias Robot =
     { heading : Heading
@@ -16,6 +25,8 @@ type Heading
 
 type alias Position =
     ( Int, Int )
+
+
 
 
 type Program
@@ -194,3 +205,5 @@ step ( robot, stack ) =
                     robot
     in
         ( next_robot, next_stack )
+
+
