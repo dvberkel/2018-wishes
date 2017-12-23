@@ -3,12 +3,13 @@ module RobotPuzzle exposing (..)
 import Html
 import Html.Attributes as Attribute
 import Html.Events as Event
+import Navigation
 import Robot exposing (..)
 
 
 main =
     Html.program
-        { init = init (Repeat 4 (Primitive Move))
+        { init = init (Repeat 100 (Primitive Move))
         , update = update
         , view = view
         , subscriptions = subscriptions
@@ -27,7 +28,7 @@ init program =
 #                                              #
 #                                              #
 #                                              #
-#                                              #
+#                                             G#
 ################################################
 """ |> parse
       }
@@ -52,8 +53,22 @@ update message model =
             let
                 next_state =
                     step model.world model.state
+
+                robot_position =
+                    next_state
+                        |> Tuple.first
+                        |> .position
+
+                finished =
+                    Goal == (getOccupation model.world robot_position)
+
+                next_command =
+                    if finished then
+                        Navigation.load "celebrate.html"
+                    else
+                        Cmd.none
             in
-                ( { model | state = next_state }, Cmd.none )
+                ( { model | state = next_state }, next_command )
 
 
 view : Model -> Html.Html Message
@@ -122,13 +137,19 @@ viewWorldPosition model y x =
         representation =
             if position == robot_position then
                 case robot.heading of
-                    North -> "▲"
-                    East -> "▶"
-                    South -> "▼"
-                    West -> "◀"
+                    North ->
+                        "▲"
+
+                    East ->
+                        "▶"
+
+                    South ->
+                        "▼"
+
+                    West ->
+                        "◀"
             else
                 ""
-
     in
         Html.span
             [ Attribute.classList
@@ -137,7 +158,7 @@ viewWorldPosition model y x =
                 , ( "robot", position == robot_position )
                 ]
             ]
-            [Html.text representation]
+            [ Html.text representation ]
 
 
 subscriptions : Model -> Sub msg
