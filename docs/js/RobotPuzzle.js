@@ -8567,6 +8567,23 @@ var _dummy$dummy$RobotPuzzle$viewWorldPosition = F3(
 		var robot = _elm_lang$core$Tuple$first(model.state);
 		var robot_position = robot.position;
 		var position = {ctor: '_Tuple2', _0: x, _1: y};
+		var representation = function () {
+			if (_elm_lang$core$Native_Utils.eq(position, robot_position)) {
+				var _p1 = robot.heading;
+				switch (_p1.ctor) {
+					case 'North':
+						return '▲';
+					case 'East':
+						return '▶';
+					case 'South':
+						return '▼';
+					default:
+						return '◀';
+				}
+			} else {
+				return '';
+			}
+		}();
 		var world = model.world;
 		var occupation = A2(_dummy$dummy$Robot$getOccupation, world, position);
 		return A2(
@@ -8591,27 +8608,23 @@ var _dummy$dummy$RobotPuzzle$viewWorldPosition = F3(
 									_0: 'robot',
 									_1: _elm_lang$core$Native_Utils.eq(position, robot_position)
 								},
-								_1: {
-									ctor: '::',
-									_0: {
-										ctor: '_Tuple2',
-										_0: _elm_lang$core$Basics$toString(robot.heading),
-										_1: _elm_lang$core$Native_Utils.eq(position, robot_position)
-									},
-									_1: {ctor: '[]'}
-								}
+								_1: {ctor: '[]'}
 							}
 						}
 					}),
 				_1: {ctor: '[]'}
 			},
-			{ctor: '[]'});
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(representation),
+				_1: {ctor: '[]'}
+			});
 	});
 var _dummy$dummy$RobotPuzzle$viewWorldRow = F2(
 	function (model, y) {
 		var world = model.world;
-		var _p1 = world.bounding_box;
-		var max_x = _p1._0;
+		var _p2 = world.bounding_box;
+		var max_x = _p2._0;
 		var xs = A2(_elm_lang$core$List$range, 0, max_x);
 		var ds = A2(
 			_elm_lang$core$List$map,
@@ -8628,8 +8641,8 @@ var _dummy$dummy$RobotPuzzle$viewWorldRow = F2(
 	});
 var _dummy$dummy$RobotPuzzle$viewWorld = function (model) {
 	var world = model.world;
-	var _p2 = world.bounding_box;
-	var max_y = _p2._1;
+	var _p3 = world.bounding_box;
+	var max_y = _p3._1;
 	var ys = A2(_elm_lang$core$List$range, 0, max_y);
 	var ds = A2(
 		_elm_lang$core$List$map,
@@ -8646,7 +8659,7 @@ var _dummy$dummy$RobotPuzzle$viewWorld = function (model) {
 };
 var _dummy$dummy$RobotPuzzle$update = F2(
 	function (message, model) {
-		var _p3 = message;
+		var _p4 = message;
 		var next_state = A2(_dummy$dummy$Robot$step, model.world, model.state);
 		return {
 			ctor: '_Tuple2',

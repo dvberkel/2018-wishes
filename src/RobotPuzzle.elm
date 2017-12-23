@@ -118,16 +118,26 @@ viewWorldPosition model y x =
 
         robot_position =
             robot.position
+
+        representation =
+            if position == robot_position then
+                case robot.heading of
+                    North -> "▲"
+                    East -> "▶"
+                    South -> "▼"
+                    West -> "◀"
+            else
+                ""
+
     in
         Html.span
             [ Attribute.classList
                 [ ( "position", True )
                 , ( toString occupation, True )
                 , ( "robot", position == robot_position )
-                , ( toString robot.heading, position == robot_position )
                 ]
             ]
-            []
+            [Html.text representation]
 
 
 subscriptions : Model -> Sub msg

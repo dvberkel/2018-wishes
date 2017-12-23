@@ -1,5 +1,6 @@
 html {
     --content-border: 10px;
+    --robot-cell-size: 11px;
 }
 
 body {
@@ -134,4 +135,52 @@ div.logigram .hats .hat.chosen:before {
     position: relative;
     left: 10px;
     top: 6px;
+}
+
+div .world {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: white;
+}
+
+div .world .row {
+    margin: 0;
+    padding: 0;
+}
+
+div .world .row .position {
+    display: inline-block;
+    min-width: var(--robot-cell-size);
+    min-height: var(--robot-cell-size);
+    width: var(--robot-cell-size);
+    height: var(--robot-cell-size);
+    border-style: solid;
+    border-color: black;
+    border-width: 0 1px 1px 0;
+    padding: 0;
+    margin: 0;
+}
+
+div .world .row:first-child .position:first-child {
+    border-width: 1px;
+}
+
+div .world .row:first-child .position {
+    border-width: 1px 1px 1px 0;
+
+}
+
+div .world .row .position:first-child {
+    border-width: 0 1px 1px 1px;
+}
+
+div .world .row .position.Wall {
+    background-color: black;
+}
+
+div .world .row .position.robot {
+    background-color: blue;
+    color: white;
 }
