@@ -184,6 +184,10 @@ div .world .row .position.Wall {
     background-color: black;
 }
 
+div .world .row .position.Goal {
+    background-color: red;
+}
+
 div .world .row .position.robot {
     background-color: blue;
     color: white;
