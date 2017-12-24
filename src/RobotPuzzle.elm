@@ -21,7 +21,7 @@ init : ( Model, Cmd Message )
 init =
     let
         program =
-            case compile "[5M]" of
+            case compile "LL[50M]" of
                 Ok p -> p
 
                 Err _ -> Primitive Right

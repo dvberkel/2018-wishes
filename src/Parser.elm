@@ -17,7 +17,7 @@ compile input =
 
 program : Parser s Robot.Program
 program =
-    choice [ primitive, repetition ]
+    lazy (\() -> choice [ repetition, seq ])
 
 
 primitive : Parser s Robot.Program
@@ -40,6 +40,19 @@ right =
     string "R" $> Primitive Right
 
 
+seq : Parser s Robot.Program
+seq =
+    let
+        options =
+            choice [ primitive, repetition ]
+
+        programs =
+            many1 options
+                |> map Sequence
+    in
+        lazy (\() -> programs)
+
+
 repetition : Parser s Robot.Program
 repetition =
     let
@@ -51,4 +64,4 @@ repetition =
         what n =
             primitive |> map (Repeat n)
     in
-        brackets repeatProgram
+        lazy (\() -> brackets repeatProgram)
