@@ -10,24 +10,24 @@ import Parser exposing (compile)
 
 main =
     Html.program
-        { init = init
+        { init = init "LL[50M]" (1, 1)
         , update = update
         , view = view
         , subscriptions = subscriptions
         }
 
 
-init : ( Model, Cmd Message )
-init =
+init : String -> Position -> ( Model, Cmd Message )
+init source origin =
     let
         program =
-            case compile "LL[50M]" of
+            case compile source of
                 Ok p -> p
 
                 Err _ -> Primitive Right
     in
         ( { run = False
-          , state = load ( 1, 1 ) program
+          , state = load origin program
           , world = """################################################
 #                                              #
 #                                              #

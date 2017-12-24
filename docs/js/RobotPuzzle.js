@@ -11100,28 +11100,26 @@ var _dummy$dummy$RobotPuzzle$update = F2(
 				};
 		}
 	});
-var _dummy$dummy$RobotPuzzle$init = function () {
-	var program = function () {
-		var _p4 = _dummy$dummy$Parser$compile('LL[50M]');
-		if (_p4.ctor === 'Ok') {
-			return _p4._0;
-		} else {
-			return _dummy$dummy$Robot$Primitive(_dummy$dummy$Robot$Right);
-		}
-	}();
-	return {
-		ctor: '_Tuple2',
-		_0: {
-			run: false,
-			state: A2(
-				_dummy$dummy$Robot$load,
-				{ctor: '_Tuple2', _0: 1, _1: 1},
-				program),
-			world: _dummy$dummy$Robot$parse('################################################\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                             G#\n################################################\n')
-		},
-		_1: _elm_lang$core$Platform_Cmd$none
-	};
-}();
+var _dummy$dummy$RobotPuzzle$init = F2(
+	function (source, origin) {
+		var program = function () {
+			var _p4 = _dummy$dummy$Parser$compile(source);
+			if (_p4.ctor === 'Ok') {
+				return _p4._0;
+			} else {
+				return _dummy$dummy$Robot$Primitive(_dummy$dummy$Robot$Right);
+			}
+		}();
+		return {
+			ctor: '_Tuple2',
+			_0: {
+				run: false,
+				state: A2(_dummy$dummy$Robot$load, origin, program),
+				world: _dummy$dummy$Robot$parse('################################################\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                             G#\n################################################\n')
+			},
+			_1: _elm_lang$core$Platform_Cmd$none
+		};
+	});
 var _dummy$dummy$RobotPuzzle$Model = F3(
 	function (a, b, c) {
 		return {run: a, state: b, world: c};
@@ -11178,7 +11176,15 @@ var _dummy$dummy$RobotPuzzle$subscriptions = function (model) {
 		_dummy$dummy$RobotPuzzle$takeStep(model));
 };
 var _dummy$dummy$RobotPuzzle$main = _elm_lang$html$Html$program(
-	{init: _dummy$dummy$RobotPuzzle$init, update: _dummy$dummy$RobotPuzzle$update, view: _dummy$dummy$RobotPuzzle$view, subscriptions: _dummy$dummy$RobotPuzzle$subscriptions})();
+	{
+		init: A2(
+			_dummy$dummy$RobotPuzzle$init,
+			'LL[50M]',
+			{ctor: '_Tuple2', _0: 1, _1: 1}),
+		update: _dummy$dummy$RobotPuzzle$update,
+		view: _dummy$dummy$RobotPuzzle$view,
+		subscriptions: _dummy$dummy$RobotPuzzle$subscriptions
+	})();
 
 var Elm = {};
 Elm['RobotPuzzle'] = Elm['RobotPuzzle'] || {};
