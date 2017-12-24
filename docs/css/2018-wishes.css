@@ -137,6 +137,14 @@ div.logigram .hats .hat.chosen:before {
     top: 6px;
 }
 
+div .correct {
+    color: green;
+}
+
+div .incorrect {
+    color: red;
+}
+
 div .world {
     display: flex;
     flex-direction: column;
