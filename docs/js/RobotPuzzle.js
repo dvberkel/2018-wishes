@@ -10974,13 +10974,20 @@ _elm_lang$core$Native_Platform.effectManagers['Navigation'] = {pkg: 'elm-lang/na
 
 var _dummy$dummy$RobotPuzzle$viewWorldPosition = F3(
 	function (model, y, x) {
-		var robot = _elm_lang$core$Tuple$first(model.state);
+		var robot = function () {
+			var _p0 = model.state;
+			if (_p0.ctor === 'Just') {
+				return _elm_lang$core$Tuple$first(_p0._0);
+			} else {
+				return model.origin;
+			}
+		}();
 		var robot_position = robot.position;
 		var position = {ctor: '_Tuple2', _0: x, _1: y};
 		var representation = function () {
 			if (_elm_lang$core$Native_Utils.eq(position, robot_position)) {
-				var _p0 = robot.heading;
-				switch (_p0.ctor) {
+				var _p1 = robot.heading;
+				switch (_p1.ctor) {
 					case 'North':
 						return '▲';
 					case 'East':
@@ -11033,8 +11040,8 @@ var _dummy$dummy$RobotPuzzle$viewWorldPosition = F3(
 var _dummy$dummy$RobotPuzzle$viewWorldRow = F2(
 	function (model, y) {
 		var world = model.world;
-		var _p1 = world.bounding_box;
-		var max_x = _p1._0;
+		var _p2 = world.bounding_box;
+		var max_x = _p2._0;
 		var xs = A2(_elm_lang$core$List$range, 0, max_x);
 		var ds = A2(
 			_elm_lang$core$List$map,
@@ -11051,8 +11058,8 @@ var _dummy$dummy$RobotPuzzle$viewWorldRow = F2(
 	});
 var _dummy$dummy$RobotPuzzle$viewWorld = function (model) {
 	var world = model.world;
-	var _p2 = world.bounding_box;
-	var max_y = _p2._1;
+	var _p3 = world.bounding_box;
+	var max_y = _p3._1;
 	var ys = A2(_elm_lang$core$List$range, 0, max_y);
 	var ds = A2(
 		_elm_lang$core$List$map,
@@ -11069,8 +11076,8 @@ var _dummy$dummy$RobotPuzzle$viewWorld = function (model) {
 };
 var _dummy$dummy$RobotPuzzle$update = F2(
 	function (message, model) {
-		var _p3 = message;
-		switch (_p3.ctor) {
+		var _p4 = message;
+		switch (_p4.ctor) {
 			case 'Idle':
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'Toggle':
@@ -11082,47 +11089,57 @@ var _dummy$dummy$RobotPuzzle$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
-				var next_state = A2(_dummy$dummy$Robot$step, model.world, model.state);
-				var robot_position = function (_) {
-					return _.position;
-				}(
-					_elm_lang$core$Tuple$first(next_state));
-				var finished = _elm_lang$core$Native_Utils.eq(
-					_dummy$dummy$Robot$Goal,
-					A2(_dummy$dummy$Robot$getOccupation, model.world, robot_position));
-				var next_command = finished ? _elm_lang$navigation$Navigation$load('celebrate.html') : _elm_lang$core$Platform_Cmd$none;
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{state: next_state}),
-					_1: next_command
-				};
+				var _p5 = model.state;
+				if (_p5.ctor === 'Nothing') {
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				} else {
+					var next_state = A2(_dummy$dummy$Robot$step, model.world, _p5._0);
+					var robot_position = function (_) {
+						return _.position;
+					}(
+						_elm_lang$core$Tuple$first(next_state));
+					var finished = _elm_lang$core$Native_Utils.eq(
+						_dummy$dummy$Robot$Goal,
+						A2(_dummy$dummy$Robot$getOccupation, model.world, robot_position));
+					var next_command = finished ? _elm_lang$navigation$Navigation$load('celebrate.html') : _elm_lang$core$Platform_Cmd$none;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								state: _elm_lang$core$Maybe$Just(next_state)
+							}),
+						_1: next_command
+					};
+				}
 		}
 	});
 var _dummy$dummy$RobotPuzzle$init = F2(
 	function (source, origin) {
-		var program = function () {
-			var _p4 = _dummy$dummy$Parser$compile(source);
-			if (_p4.ctor === 'Ok') {
-				return _p4._0;
+		var state = function () {
+			var _p6 = _dummy$dummy$Parser$compile(source);
+			if (_p6.ctor === 'Ok') {
+				return _elm_lang$core$Maybe$Just(
+					A2(_dummy$dummy$Robot$load, origin, _p6._0));
 			} else {
-				return _dummy$dummy$Robot$Primitive(_dummy$dummy$Robot$Right);
+				return _elm_lang$core$Maybe$Nothing;
 			}
 		}();
 		return {
 			ctor: '_Tuple2',
 			_0: {
 				run: false,
-				state: A2(_dummy$dummy$Robot$load, origin, program),
+				source: source,
+				origin: {position: origin, heading: _dummy$dummy$Robot$North},
+				state: state,
 				world: _dummy$dummy$Robot$parse('################################################\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                             G#\n################################################\n')
 			},
 			_1: _elm_lang$core$Platform_Cmd$none
 		};
 	});
-var _dummy$dummy$RobotPuzzle$Model = F3(
-	function (a, b, c) {
-		return {run: a, state: b, world: c};
+var _dummy$dummy$RobotPuzzle$Model = F5(
+	function (a, b, c, d, e) {
+		return {run: a, source: b, origin: c, state: d, world: e};
 	});
 var _dummy$dummy$RobotPuzzle$Toggle = {ctor: 'Toggle'};
 var _dummy$dummy$RobotPuzzle$view = function (model) {
@@ -11166,7 +11183,7 @@ var _dummy$dummy$RobotPuzzle$view = function (model) {
 var _dummy$dummy$RobotPuzzle$Idle = {ctor: 'Idle'};
 var _dummy$dummy$RobotPuzzle$Step = {ctor: 'Step'};
 var _dummy$dummy$RobotPuzzle$takeStep = F2(
-	function (model, _p5) {
+	function (model, _p7) {
 		return model.run ? _dummy$dummy$RobotPuzzle$Step : _dummy$dummy$RobotPuzzle$Idle;
 	});
 var _dummy$dummy$RobotPuzzle$subscriptions = function (model) {

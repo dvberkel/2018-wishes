@@ -8,9 +8,10 @@ import Navigation
 import Robot exposing (..)
 import Parser exposing (compile)
 
+
 main =
     Html.program
-        { init = init "LL[50M]" (1, 1)
+        { init = init "LL[50M]" ( 1, 1 )
         , update = update
         , view = view
         , subscriptions = subscriptions
@@ -20,14 +21,18 @@ main =
 init : String -> Position -> ( Model, Cmd Message )
 init source origin =
     let
-        program =
+        state =
             case compile source of
-                Ok p -> p
+                Ok p ->
+                    Just (load origin p)
 
-                Err _ -> Primitive Right
+                Err _ ->
+                    Nothing
     in
         ( { run = False
-          , state = load origin program
+          , source = source
+          , origin = { position = origin, heading = North }
+          , state = state
           , world = """################################################
 #                                              #
 #                                              #
@@ -40,14 +45,16 @@ init source origin =
 #                                             G#
 ################################################
 """ |> parse
-      }
-    , Cmd.none
-    )
+          }
+        , Cmd.none
+        )
 
 
 type alias Model =
     { run : Bool
-    , state : ( Robot, ProgramStack )
+    , source : String
+    , origin : Robot
+    , state : Maybe ( Robot, ProgramStack )
     , world : World
     }
 
@@ -68,25 +75,30 @@ update message model =
             ( { model | run = not model.run }, Cmd.none )
 
         Step ->
-            let
-                next_state =
-                    step model.world model.state
+            case model.state of
+                Nothing ->
+                    ( model, Cmd.none )
 
-                robot_position =
-                    next_state
-                        |> Tuple.first
-                        |> .position
+                Just state ->
+                    let
+                        next_state =
+                            step model.world state
 
-                finished =
-                    Goal == (getOccupation model.world robot_position)
+                        robot_position =
+                            next_state
+                                |> Tuple.first
+                                |> .position
 
-                next_command =
-                    if finished then
-                        Navigation.load "celebrate.html"
-                    else
-                        Cmd.none
-            in
-                ( { model | state = next_state }, next_command )
+                        finished =
+                            Goal == (getOccupation model.world robot_position)
+
+                        next_command =
+                            if finished then
+                                Navigation.load "celebrate.html"
+                            else
+                                Cmd.none
+                    in
+                        ( { model | state = Just next_state }, next_command )
 
 
 view : Model -> Html.Html Message
@@ -98,11 +110,11 @@ view model =
             else
                 ">"
     in
-    Html.div []
-        [ Html.button [ Event.onClick Toggle ] [ Html.text runText ]
-        , Html.span [] [ Html.text (toString model.state) ]
-        , viewWorld model
-        ]
+        Html.div []
+            [ Html.button [ Event.onClick Toggle ] [ Html.text runText ]
+            , Html.span [] [ Html.text (toString model.state) ]
+            , viewWorld model
+            ]
 
 
 viewWorld : Model -> Html.Html Message
@@ -154,7 +166,12 @@ viewWorldPosition model y x =
             getOccupation world position
 
         robot =
-            model.state |> Tuple.first
+            case model.state of
+                Just state ->
+                    Tuple.first state
+
+                Nothing ->
+                    model.origin
 
         robot_position =
             robot.position
@@ -189,6 +206,7 @@ viewWorldPosition model y x =
 subscriptions : Model -> Sub Message
 subscriptions model =
     every (100 * millisecond) (takeStep model)
+
 
 takeStep : Model -> Time -> Message
 takeStep model _ =
