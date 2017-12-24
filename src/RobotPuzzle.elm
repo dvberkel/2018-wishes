@@ -11,16 +11,19 @@ import Parser exposing (compile)
 
 main =
     Html.program
-        { init = init "LL[5M]" ( 1, 1 )
+        { init = init "LL[5M]" ( 1, 1 ) North
         , update = update
         , view = view
         , subscriptions = subscriptions
         }
 
 
-init : String -> Position -> ( Model, Cmd Message )
-init source origin =
+init : String -> Position -> Heading -> ( Model, Cmd Message )
+init source origin heading =
     let
+        robot =
+            create origin heading
+
         program =
             case compile source of
                 Ok p ->
@@ -30,12 +33,12 @@ init source origin =
                     Nothing
 
         state =
-            Maybe.map (load origin) program
+            Maybe.map (load robot) program
     in
         ( { run = False
           , source = source
           , program = program
-          , origin = { position = origin, heading = North }
+          , initial = robot
           , state = state
           , world = """################################################
 #                                              #
@@ -58,7 +61,7 @@ type alias Model =
     { run : Bool
     , source : String
     , program : Maybe Robot.Program
-    , origin : Robot
+    , initial : Robot
     , state : Maybe ( Robot, ProgramStack )
     , world : World
     }
@@ -84,7 +87,7 @@ update message model =
 
                 next_state =
                     if not next_run then
-                        Maybe.map (load model.origin.position) model.program
+                        Maybe.map (load model.initial) model.program
                     else
                         model.state
             in
@@ -101,7 +104,7 @@ update message model =
                             Nothing
 
                 state =
-                    Maybe.map (load model.origin.position) model.program
+                    Maybe.map (load model.initial) model.program
             in
                 ( { model | run = False, source = source, program = program, state = state }, Cmd.none )
 
@@ -202,7 +205,7 @@ viewWorldPosition model y x =
                     Tuple.first state
 
                 Nothing ->
-                    model.origin
+                    model.initial
 
         robot_position =
             robot.position

@@ -5454,6 +5454,20 @@ var _dummy$dummy$Robot$delta = function (h) {
 			return {ctor: '_Tuple2', _0: -1, _1: 0};
 	}
 };
+var _dummy$dummy$Robot$load = F2(
+	function (robot, program) {
+		return {
+			ctor: '_Tuple2',
+			_0: robot,
+			_1: {
+				program: _elm_lang$core$List$singleton(program)
+			}
+		};
+	});
+var _dummy$dummy$Robot$create = F2(
+	function (position, heading) {
+		return {position: position, heading: heading};
+	});
 var _dummy$dummy$Robot$push = F2(
 	function (program, stack) {
 		return {
@@ -5546,16 +5560,6 @@ var _dummy$dummy$Robot$West = {ctor: 'West'};
 var _dummy$dummy$Robot$South = {ctor: 'South'};
 var _dummy$dummy$Robot$East = {ctor: 'East'};
 var _dummy$dummy$Robot$North = {ctor: 'North'};
-var _dummy$dummy$Robot$load = F2(
-	function (position, program) {
-		return {
-			ctor: '_Tuple2',
-			_0: {heading: _dummy$dummy$Robot$North, position: position},
-			_1: {
-				program: _elm_lang$core$List$singleton(program)
-			}
-		};
-	});
 var _dummy$dummy$Robot$turnLeft = function (h) {
 	var _p14 = h;
 	switch (_p14.ctor) {
@@ -10979,7 +10983,7 @@ var _dummy$dummy$RobotPuzzle$viewWorldPosition = F3(
 			if (_p0.ctor === 'Just') {
 				return _elm_lang$core$Tuple$first(_p0._0);
 			} else {
-				return model.origin;
+				return model.initial;
 			}
 		}();
 		var robot_position = robot.position;
@@ -11084,7 +11088,7 @@ var _dummy$dummy$RobotPuzzle$update = F2(
 				var next_run = !model.run;
 				var next_state = (!next_run) ? A2(
 					_elm_lang$core$Maybe$map,
-					_dummy$dummy$Robot$load(model.origin.position),
+					_dummy$dummy$Robot$load(model.initial),
 					model.program) : model.state;
 				return {
 					ctor: '_Tuple2',
@@ -11097,7 +11101,7 @@ var _dummy$dummy$RobotPuzzle$update = F2(
 				var _p6 = _p4._0;
 				var state = A2(
 					_elm_lang$core$Maybe$map,
-					_dummy$dummy$Robot$load(model.origin.position),
+					_dummy$dummy$Robot$load(model.initial),
 					model.program);
 				var program = function () {
 					var _p5 = _dummy$dummy$Parser$compile(_p6);
@@ -11140,8 +11144,8 @@ var _dummy$dummy$RobotPuzzle$update = F2(
 				}
 		}
 	});
-var _dummy$dummy$RobotPuzzle$init = F2(
-	function (source, origin) {
+var _dummy$dummy$RobotPuzzle$init = F3(
+	function (source, origin, heading) {
 		var program = function () {
 			var _p8 = _dummy$dummy$Parser$compile(source);
 			if (_p8.ctor === 'Ok') {
@@ -11150,9 +11154,10 @@ var _dummy$dummy$RobotPuzzle$init = F2(
 				return _elm_lang$core$Maybe$Nothing;
 			}
 		}();
+		var robot = A2(_dummy$dummy$Robot$create, origin, heading);
 		var state = A2(
 			_elm_lang$core$Maybe$map,
-			_dummy$dummy$Robot$load(origin),
+			_dummy$dummy$Robot$load(robot),
 			program);
 		return {
 			ctor: '_Tuple2',
@@ -11160,7 +11165,7 @@ var _dummy$dummy$RobotPuzzle$init = F2(
 				run: false,
 				source: source,
 				program: program,
-				origin: {position: origin, heading: _dummy$dummy$Robot$North},
+				initial: robot,
 				state: state,
 				world: _dummy$dummy$Robot$parse('################################################\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                             G#\n################################################\n')
 			},
@@ -11169,7 +11174,7 @@ var _dummy$dummy$RobotPuzzle$init = F2(
 	});
 var _dummy$dummy$RobotPuzzle$Model = F6(
 	function (a, b, c, d, e, f) {
-		return {run: a, source: b, program: c, origin: d, state: e, world: f};
+		return {run: a, source: b, program: c, initial: d, state: e, world: f};
 	});
 var _dummy$dummy$RobotPuzzle$UpdateSource = function (a) {
 	return {ctor: 'UpdateSource', _0: a};
@@ -11230,10 +11235,11 @@ var _dummy$dummy$RobotPuzzle$subscriptions = function (model) {
 };
 var _dummy$dummy$RobotPuzzle$main = _elm_lang$html$Html$program(
 	{
-		init: A2(
+		init: A3(
 			_dummy$dummy$RobotPuzzle$init,
 			'LL[5M]',
-			{ctor: '_Tuple2', _0: 1, _1: 1}),
+			{ctor: '_Tuple2', _0: 1, _1: 1},
+			_dummy$dummy$Robot$North),
 		update: _dummy$dummy$RobotPuzzle$update,
 		view: _dummy$dummy$RobotPuzzle$view,
 		subscriptions: _dummy$dummy$RobotPuzzle$subscriptions

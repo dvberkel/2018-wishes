@@ -190,9 +190,14 @@ push program stack =
     { program = program :: stack.program }
 
 
-load : Position -> Program -> ( Robot, ProgramStack )
-load position program =
-    ( { heading = North, position = position }, { program = List.singleton program } )
+create : Position -> Heading -> Robot
+create position heading =
+    { position = position, heading = heading }
+
+
+load : Robot -> Program -> ( Robot, ProgramStack )
+load robot program =
+    ( robot, { program = List.singleton program } )
 
 
 act : World -> Action -> Robot -> Robot
@@ -218,7 +223,6 @@ act world action robot =
 
                     _ ->
                         { robot | position = add robot.position change }
-
 
         Left ->
             let
