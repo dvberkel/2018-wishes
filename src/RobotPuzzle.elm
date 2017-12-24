@@ -6,22 +6,29 @@ import Html.Events as Event
 import Time exposing (Time, millisecond, every)
 import Navigation
 import Robot exposing (..)
-
+import Parser exposing (compile)
 
 main =
     Html.program
-        { init = init (Repeat 100 (Primitive Move))
+        { init = init
         , update = update
         , view = view
         , subscriptions = subscriptions
         }
 
 
-init : Robot.Program -> ( Model, Cmd Message )
-init program =
-    ( { run = False
-      , state = load ( 1, 1 ) program
-      , world = """################################################
+init : ( Model, Cmd Message )
+init =
+    let
+        program =
+            case compile "M" of
+                Ok p -> p
+
+                Err _ -> Primitive Right
+    in
+        ( { run = False
+          , state = load ( 1, 1 ) program
+          , world = """################################################
 #                                              #
 #                                              #
 #                                              #
