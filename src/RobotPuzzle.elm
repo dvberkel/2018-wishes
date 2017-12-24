@@ -11,7 +11,7 @@ import Parser exposing (compile)
 
 main =
     Html.program
-        { init = init "LL[50M]" ( 1, 1 )
+        { init = init "LL[5M]" ( 1, 1 )
         , update = update
         , view = view
         , subscriptions = subscriptions
@@ -63,6 +63,7 @@ type Message
     = Step
     | Idle
     | Toggle
+    | UpdateSource String
 
 
 update : Message -> Model -> ( Model, Cmd Message )
@@ -73,6 +74,18 @@ update message model =
 
         Toggle ->
             ( { model | run = not model.run }, Cmd.none )
+
+        UpdateSource source ->
+            let
+                state =
+                    case compile source of
+                        Ok p ->
+                            Just (load model.origin.position p)
+
+                        Err _ ->
+                            Nothing
+            in
+                ({model | run = False, source = source, state = state }, Cmd.none)
 
         Step ->
             case model.state of
@@ -112,7 +125,7 @@ view model =
     in
         Html.div []
             [ Html.button [ Event.onClick Toggle ] [ Html.text runText ]
-            , Html.span [] [ Html.text (toString model.state) ]
+            , Html.input [ Attribute.defaultValue model.source, Event.onInput UpdateSource ] []
             , viewWorld model
             ]
 
