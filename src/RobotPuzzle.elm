@@ -138,6 +138,20 @@ update message model =
 view : Model -> Html.Html Message
 view model =
     let
+        correct =
+            case model.program of
+                Just _ ->
+                    True
+
+                Nothing ->
+                    False
+
+        check =
+            if correct then
+                "✓"
+            else
+                "❌"
+
         runText =
             if model.run then
                 "||"
@@ -146,7 +160,18 @@ view model =
     in
         Html.div []
             [ Html.button [ Event.onClick Toggle ] [ Html.text runText ]
-            , Html.input [ Attribute.defaultValue model.source, Event.onInput UpdateSource ] []
+            , Html.span
+                [ Attribute.classList
+                    [ ( "correct", correct )
+                    , ( "incorrect", not correct )
+                    ]
+                ]
+                [ Html.text check ]
+            , Html.input
+                [ Attribute.defaultValue model.source
+                , Event.onInput UpdateSource
+                ]
+                []
             , viewWorld model
             ]
 

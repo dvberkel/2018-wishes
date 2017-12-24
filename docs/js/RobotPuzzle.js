@@ -5776,16 +5776,19 @@ var _dummy$dummy$Parser$seq = function () {
 var _dummy$dummy$Parser$program = _elm_community$parser_combinators$Combine$lazy(
 	function (_p4) {
 		var _p5 = _p4;
-		return _elm_community$parser_combinators$Combine$choice(
-			{
-				ctor: '::',
-				_0: _dummy$dummy$Parser$repetition,
-				_1: {
+		return A2(
+			_elm_community$parser_combinators$Combine_ops['<*'],
+			_elm_community$parser_combinators$Combine$choice(
+				{
 					ctor: '::',
-					_0: _dummy$dummy$Parser$seq,
-					_1: {ctor: '[]'}
-				}
-			});
+					_0: _dummy$dummy$Parser$repetition,
+					_1: {
+						ctor: '::',
+						_0: _dummy$dummy$Parser$seq,
+						_1: {ctor: '[]'}
+					}
+				}),
+			_elm_community$parser_combinators$Combine$end);
 	});
 var _dummy$dummy$Parser$compile = function (input) {
 	var _p6 = A2(_elm_community$parser_combinators$Combine$parse, _dummy$dummy$Parser$program, input);
@@ -11182,6 +11185,15 @@ var _dummy$dummy$RobotPuzzle$UpdateSource = function (a) {
 var _dummy$dummy$RobotPuzzle$Toggle = {ctor: 'Toggle'};
 var _dummy$dummy$RobotPuzzle$view = function (model) {
 	var runText = model.run ? '||' : '>';
+	var correct = function () {
+		var _p9 = model.program;
+		if (_p9.ctor === 'Just') {
+			return true;
+		} else {
+			return false;
+		}
+	}();
+	var check = correct ? '✓' : '❌';
 	return A2(
 		_elm_lang$html$Html$div,
 		{ctor: '[]'},
@@ -11202,21 +11214,45 @@ var _dummy$dummy$RobotPuzzle$view = function (model) {
 			_1: {
 				ctor: '::',
 				_0: A2(
-					_elm_lang$html$Html$input,
+					_elm_lang$html$Html$span,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$defaultValue(model.source),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$html$Html_Events$onInput(_dummy$dummy$RobotPuzzle$UpdateSource),
-							_1: {ctor: '[]'}
-						}
+						_0: _elm_lang$html$Html_Attributes$classList(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'correct', _1: correct},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'incorrect', _1: !correct},
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {ctor: '[]'}
 					},
-					{ctor: '[]'}),
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(check),
+						_1: {ctor: '[]'}
+					}),
 				_1: {
 					ctor: '::',
-					_0: _dummy$dummy$RobotPuzzle$viewWorld(model),
-					_1: {ctor: '[]'}
+					_0: A2(
+						_elm_lang$html$Html$input,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$defaultValue(model.source),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onInput(_dummy$dummy$RobotPuzzle$UpdateSource),
+								_1: {ctor: '[]'}
+							}
+						},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: _dummy$dummy$RobotPuzzle$viewWorld(model),
+						_1: {ctor: '[]'}
+					}
 				}
 			}
 		});
@@ -11224,7 +11260,7 @@ var _dummy$dummy$RobotPuzzle$view = function (model) {
 var _dummy$dummy$RobotPuzzle$Idle = {ctor: 'Idle'};
 var _dummy$dummy$RobotPuzzle$Step = {ctor: 'Step'};
 var _dummy$dummy$RobotPuzzle$takeStep = F2(
-	function (model, _p9) {
+	function (model, _p10) {
 		return model.run ? _dummy$dummy$RobotPuzzle$Step : _dummy$dummy$RobotPuzzle$Idle;
 	});
 var _dummy$dummy$RobotPuzzle$subscriptions = function (model) {
