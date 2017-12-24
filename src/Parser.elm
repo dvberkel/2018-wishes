@@ -49,6 +49,6 @@ repetition =
 
         what : Int -> Parser s Robot.Program
         what n =
-            program |> map (Repeat n)
+            primitive |> map (Repeat n)
     in
         brackets repeatProgram
