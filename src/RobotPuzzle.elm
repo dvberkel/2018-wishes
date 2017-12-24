@@ -21,16 +21,20 @@ main =
 init : String -> Position -> ( Model, Cmd Message )
 init source origin =
     let
-        state =
+        program =
             case compile source of
                 Ok p ->
-                    Just (load origin p)
+                    Just p
 
                 Err _ ->
                     Nothing
+
+        state =
+            Maybe.map (load origin) program
     in
         ( { run = False
           , source = source
+          , program = program
           , origin = { position = origin, heading = North }
           , state = state
           , world = """################################################
@@ -53,6 +57,7 @@ init source origin =
 type alias Model =
     { run : Bool
     , source : String
+    , program : Maybe Robot.Program
     , origin : Robot
     , state : Maybe ( Robot, ProgramStack )
     , world : World
@@ -74,32 +79,31 @@ update message model =
 
         Toggle ->
             let
-                next_run = not model.run
+                next_run =
+                    not model.run
 
                 next_state =
                     if not next_run then
-                        case compile model.source of
-                            Ok p ->
-                                Just (load model.origin.position p)
-
-                            Err _ ->
-                                Nothing
+                        Maybe.map (load model.origin.position) model.program
                     else
                         model.state
-             in
-            ( { model | run = not model.run, state = next_state }, Cmd.none )
+            in
+                ( { model | run = not model.run, state = next_state }, Cmd.none )
 
         UpdateSource source ->
             let
-                state =
+                program =
                     case compile source of
                         Ok p ->
-                            Just (load model.origin.position p)
+                            Just p
 
                         Err _ ->
                             Nothing
+
+                state =
+                    Maybe.map (load model.origin.position) model.program
             in
-                ({model | run = False, source = source, state = state }, Cmd.none)
+                ( { model | run = False, source = source, program = program, state = state }, Cmd.none )
 
         Step ->
             case model.state of

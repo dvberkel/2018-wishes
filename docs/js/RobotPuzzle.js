@@ -11082,19 +11082,10 @@ var _dummy$dummy$RobotPuzzle$update = F2(
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'Toggle':
 				var next_run = !model.run;
-				var next_state = function () {
-					if (!next_run) {
-						var _p5 = _dummy$dummy$Parser$compile(model.source);
-						if (_p5.ctor === 'Ok') {
-							return _elm_lang$core$Maybe$Just(
-								A2(_dummy$dummy$Robot$load, model.origin.position, _p5._0));
-						} else {
-							return _elm_lang$core$Maybe$Nothing;
-						}
-					} else {
-						return model.state;
-					}
-				}();
+				var next_state = (!next_run) ? A2(
+					_elm_lang$core$Maybe$map,
+					_dummy$dummy$Robot$load(model.origin.position),
+					model.program) : model.state;
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -11103,12 +11094,15 @@ var _dummy$dummy$RobotPuzzle$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'UpdateSource':
-				var _p7 = _p4._0;
-				var state = function () {
-					var _p6 = _dummy$dummy$Parser$compile(_p7);
-					if (_p6.ctor === 'Ok') {
-						return _elm_lang$core$Maybe$Just(
-							A2(_dummy$dummy$Robot$load, model.origin.position, _p6._0));
+				var _p6 = _p4._0;
+				var state = A2(
+					_elm_lang$core$Maybe$map,
+					_dummy$dummy$Robot$load(model.origin.position),
+					model.program);
+				var program = function () {
+					var _p5 = _dummy$dummy$Parser$compile(_p6);
+					if (_p5.ctor === 'Ok') {
+						return _elm_lang$core$Maybe$Just(_p5._0);
 					} else {
 						return _elm_lang$core$Maybe$Nothing;
 					}
@@ -11117,15 +11111,15 @@ var _dummy$dummy$RobotPuzzle$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{run: false, source: _p7, state: state}),
+						{run: false, source: _p6, program: program, state: state}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
-				var _p8 = model.state;
-				if (_p8.ctor === 'Nothing') {
+				var _p7 = model.state;
+				if (_p7.ctor === 'Nothing') {
 					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 				} else {
-					var next_state = A2(_dummy$dummy$Robot$step, model.world, _p8._0);
+					var next_state = A2(_dummy$dummy$Robot$step, model.world, _p7._0);
 					var robot_position = function (_) {
 						return _.position;
 					}(
@@ -11148,20 +11142,24 @@ var _dummy$dummy$RobotPuzzle$update = F2(
 	});
 var _dummy$dummy$RobotPuzzle$init = F2(
 	function (source, origin) {
-		var state = function () {
-			var _p9 = _dummy$dummy$Parser$compile(source);
-			if (_p9.ctor === 'Ok') {
-				return _elm_lang$core$Maybe$Just(
-					A2(_dummy$dummy$Robot$load, origin, _p9._0));
+		var program = function () {
+			var _p8 = _dummy$dummy$Parser$compile(source);
+			if (_p8.ctor === 'Ok') {
+				return _elm_lang$core$Maybe$Just(_p8._0);
 			} else {
 				return _elm_lang$core$Maybe$Nothing;
 			}
 		}();
+		var state = A2(
+			_elm_lang$core$Maybe$map,
+			_dummy$dummy$Robot$load(origin),
+			program);
 		return {
 			ctor: '_Tuple2',
 			_0: {
 				run: false,
 				source: source,
+				program: program,
 				origin: {position: origin, heading: _dummy$dummy$Robot$North},
 				state: state,
 				world: _dummy$dummy$Robot$parse('################################################\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                              #\n#                                             G#\n################################################\n')
@@ -11169,9 +11167,9 @@ var _dummy$dummy$RobotPuzzle$init = F2(
 			_1: _elm_lang$core$Platform_Cmd$none
 		};
 	});
-var _dummy$dummy$RobotPuzzle$Model = F5(
-	function (a, b, c, d, e) {
-		return {run: a, source: b, origin: c, state: d, world: e};
+var _dummy$dummy$RobotPuzzle$Model = F6(
+	function (a, b, c, d, e, f) {
+		return {run: a, source: b, program: c, origin: d, state: e, world: f};
 	});
 var _dummy$dummy$RobotPuzzle$UpdateSource = function (a) {
 	return {ctor: 'UpdateSource', _0: a};
@@ -11221,7 +11219,7 @@ var _dummy$dummy$RobotPuzzle$view = function (model) {
 var _dummy$dummy$RobotPuzzle$Idle = {ctor: 'Idle'};
 var _dummy$dummy$RobotPuzzle$Step = {ctor: 'Step'};
 var _dummy$dummy$RobotPuzzle$takeStep = F2(
-	function (model, _p10) {
+	function (model, _p9) {
 		return model.run ? _dummy$dummy$RobotPuzzle$Step : _dummy$dummy$RobotPuzzle$Idle;
 	});
 var _dummy$dummy$RobotPuzzle$subscriptions = function (model) {
