@@ -73,7 +73,21 @@ update message model =
             ( model, Cmd.none )
 
         Toggle ->
-            ( { model | run = not model.run }, Cmd.none )
+            let
+                next_run = not model.run
+
+                next_state =
+                    if not next_run then
+                        case compile model.source of
+                            Ok p ->
+                                Just (load model.origin.position p)
+
+                            Err _ ->
+                                Nothing
+                    else
+                        model.state
+             in
+            ( { model | run = not model.run, state = next_state }, Cmd.none )
 
         UpdateSource source ->
             let

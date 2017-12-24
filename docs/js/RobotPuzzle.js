@@ -11081,20 +11081,34 @@ var _dummy$dummy$RobotPuzzle$update = F2(
 			case 'Idle':
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'Toggle':
+				var next_run = !model.run;
+				var next_state = function () {
+					if (!next_run) {
+						var _p5 = _dummy$dummy$Parser$compile(model.source);
+						if (_p5.ctor === 'Ok') {
+							return _elm_lang$core$Maybe$Just(
+								A2(_dummy$dummy$Robot$load, model.origin.position, _p5._0));
+						} else {
+							return _elm_lang$core$Maybe$Nothing;
+						}
+					} else {
+						return model.state;
+					}
+				}();
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{run: !model.run}),
+						{run: !model.run, state: next_state}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'UpdateSource':
-				var _p6 = _p4._0;
+				var _p7 = _p4._0;
 				var state = function () {
-					var _p5 = _dummy$dummy$Parser$compile(_p6);
-					if (_p5.ctor === 'Ok') {
+					var _p6 = _dummy$dummy$Parser$compile(_p7);
+					if (_p6.ctor === 'Ok') {
 						return _elm_lang$core$Maybe$Just(
-							A2(_dummy$dummy$Robot$load, model.origin.position, _p5._0));
+							A2(_dummy$dummy$Robot$load, model.origin.position, _p6._0));
 					} else {
 						return _elm_lang$core$Maybe$Nothing;
 					}
@@ -11103,15 +11117,15 @@ var _dummy$dummy$RobotPuzzle$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{run: false, source: _p6, state: state}),
+						{run: false, source: _p7, state: state}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
-				var _p7 = model.state;
-				if (_p7.ctor === 'Nothing') {
+				var _p8 = model.state;
+				if (_p8.ctor === 'Nothing') {
 					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 				} else {
-					var next_state = A2(_dummy$dummy$Robot$step, model.world, _p7._0);
+					var next_state = A2(_dummy$dummy$Robot$step, model.world, _p8._0);
 					var robot_position = function (_) {
 						return _.position;
 					}(
@@ -11135,10 +11149,10 @@ var _dummy$dummy$RobotPuzzle$update = F2(
 var _dummy$dummy$RobotPuzzle$init = F2(
 	function (source, origin) {
 		var state = function () {
-			var _p8 = _dummy$dummy$Parser$compile(source);
-			if (_p8.ctor === 'Ok') {
+			var _p9 = _dummy$dummy$Parser$compile(source);
+			if (_p9.ctor === 'Ok') {
 				return _elm_lang$core$Maybe$Just(
-					A2(_dummy$dummy$Robot$load, origin, _p8._0));
+					A2(_dummy$dummy$Robot$load, origin, _p9._0));
 			} else {
 				return _elm_lang$core$Maybe$Nothing;
 			}
@@ -11207,7 +11221,7 @@ var _dummy$dummy$RobotPuzzle$view = function (model) {
 var _dummy$dummy$RobotPuzzle$Idle = {ctor: 'Idle'};
 var _dummy$dummy$RobotPuzzle$Step = {ctor: 'Step'};
 var _dummy$dummy$RobotPuzzle$takeStep = F2(
-	function (model, _p9) {
+	function (model, _p10) {
 		return model.run ? _dummy$dummy$RobotPuzzle$Step : _dummy$dummy$RobotPuzzle$Idle;
 	});
 var _dummy$dummy$RobotPuzzle$subscriptions = function (model) {
