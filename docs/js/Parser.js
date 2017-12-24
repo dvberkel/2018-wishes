@@ -5454,6 +5454,20 @@ var _dummy$dummy$Robot$delta = function (h) {
 			return {ctor: '_Tuple2', _0: -1, _1: 0};
 	}
 };
+var _dummy$dummy$Robot$load = F2(
+	function (robot, program) {
+		return {
+			ctor: '_Tuple2',
+			_0: robot,
+			_1: {
+				program: _elm_lang$core$List$singleton(program)
+			}
+		};
+	});
+var _dummy$dummy$Robot$create = F2(
+	function (position, heading) {
+		return {position: position, heading: heading};
+	});
 var _dummy$dummy$Robot$push = F2(
 	function (program, stack) {
 		return {
@@ -5546,16 +5560,6 @@ var _dummy$dummy$Robot$West = {ctor: 'West'};
 var _dummy$dummy$Robot$South = {ctor: 'South'};
 var _dummy$dummy$Robot$East = {ctor: 'East'};
 var _dummy$dummy$Robot$North = {ctor: 'North'};
-var _dummy$dummy$Robot$load = F2(
-	function (position, program) {
-		return {
-			ctor: '_Tuple2',
-			_0: {heading: _dummy$dummy$Robot$North, position: position},
-			_1: {
-				program: _elm_lang$core$List$singleton(program)
-			}
-		};
-	});
 var _dummy$dummy$Robot$turnLeft = function (h) {
 	var _p14 = h;
 	switch (_p14.ctor) {
@@ -5772,16 +5776,19 @@ var _dummy$dummy$Parser$seq = function () {
 var _dummy$dummy$Parser$program = _elm_community$parser_combinators$Combine$lazy(
 	function (_p4) {
 		var _p5 = _p4;
-		return _elm_community$parser_combinators$Combine$choice(
-			{
-				ctor: '::',
-				_0: _dummy$dummy$Parser$repetition,
-				_1: {
+		return A2(
+			_elm_community$parser_combinators$Combine_ops['<*'],
+			_elm_community$parser_combinators$Combine$choice(
+				{
 					ctor: '::',
-					_0: _dummy$dummy$Parser$seq,
-					_1: {ctor: '[]'}
-				}
-			});
+					_0: _dummy$dummy$Parser$repetition,
+					_1: {
+						ctor: '::',
+						_0: _dummy$dummy$Parser$seq,
+						_1: {ctor: '[]'}
+					}
+				}),
+			_elm_community$parser_combinators$Combine$end);
 	});
 var _dummy$dummy$Parser$compile = function (input) {
 	var _p6 = A2(_elm_community$parser_combinators$Combine$parse, _dummy$dummy$Parser$program, input);

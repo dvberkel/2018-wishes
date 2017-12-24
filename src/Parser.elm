@@ -17,7 +17,11 @@ compile input =
 
 program : Parser s Robot.Program
 program =
-    lazy (\() -> choice [ repetition, seq ])
+    lazy
+        (\() ->
+            choice [ repetition, seq ]
+                <* end
+        )
 
 
 primitive : Parser s Robot.Program
