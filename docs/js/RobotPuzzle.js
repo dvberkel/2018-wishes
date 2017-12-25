@@ -11088,28 +11088,40 @@ var _dummy$dummy$RobotPuzzle$update = F2(
 			case 'Idle':
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'Toggle':
-				var next_run = !model.run;
-				var next_state = (!next_run) ? A2(
-					_elm_lang$core$Maybe$map,
-					_dummy$dummy$Robot$load(model.initial),
-					model.program) : model.state;
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{run: !model.run, state: next_state}),
-					_1: _elm_lang$core$Platform_Cmd$none
-				};
+				var _p5 = model.program;
+				if (_p5.ctor === 'Just') {
+					var next_run = !model.run;
+					var next_state = (!next_run) ? A2(
+						_elm_lang$core$Maybe$map,
+						_dummy$dummy$Robot$load(model.initial),
+						model.program) : model.state;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{run: !model.run, state: next_state}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					var next_run = false;
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{run: next_run}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				}
 			case 'UpdateSource':
-				var _p6 = _p4._0;
+				var _p7 = _p4._0;
 				var state = A2(
 					_elm_lang$core$Maybe$map,
 					_dummy$dummy$Robot$load(model.initial),
 					model.program);
 				var program = function () {
-					var _p5 = _dummy$dummy$Parser$compile(_p6);
-					if (_p5.ctor === 'Ok') {
-						return _elm_lang$core$Maybe$Just(_p5._0);
+					var _p6 = _dummy$dummy$Parser$compile(_p7);
+					if (_p6.ctor === 'Ok') {
+						return _elm_lang$core$Maybe$Just(_p6._0);
 					} else {
 						return _elm_lang$core$Maybe$Nothing;
 					}
@@ -11118,15 +11130,15 @@ var _dummy$dummy$RobotPuzzle$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{run: false, source: _p6, program: program, state: state}),
+						{run: false, source: _p7, program: program, state: state}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
-				var _p7 = model.state;
-				if (_p7.ctor === 'Nothing') {
+				var _p8 = model.state;
+				if (_p8.ctor === 'Nothing') {
 					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 				} else {
-					var next_state = A2(_dummy$dummy$Robot$step, model.world, _p7._0);
+					var next_state = A2(_dummy$dummy$Robot$step, model.world, _p8._0);
 					var robot_position = function (_) {
 						return _.position;
 					}(
@@ -11150,9 +11162,9 @@ var _dummy$dummy$RobotPuzzle$update = F2(
 var _dummy$dummy$RobotPuzzle$init = F3(
 	function (source, origin, heading) {
 		var program = function () {
-			var _p8 = _dummy$dummy$Parser$compile(source);
-			if (_p8.ctor === 'Ok') {
-				return _elm_lang$core$Maybe$Just(_p8._0);
+			var _p9 = _dummy$dummy$Parser$compile(source);
+			if (_p9.ctor === 'Ok') {
+				return _elm_lang$core$Maybe$Just(_p9._0);
 			} else {
 				return _elm_lang$core$Maybe$Nothing;
 			}
@@ -11186,8 +11198,8 @@ var _dummy$dummy$RobotPuzzle$Toggle = {ctor: 'Toggle'};
 var _dummy$dummy$RobotPuzzle$view = function (model) {
 	var runText = model.run ? '||' : '>';
 	var correct = function () {
-		var _p9 = model.program;
-		if (_p9.ctor === 'Just') {
+		var _p10 = model.program;
+		if (_p10.ctor === 'Just') {
 			return true;
 		} else {
 			return false;
@@ -11203,8 +11215,12 @@ var _dummy$dummy$RobotPuzzle$view = function (model) {
 				_elm_lang$html$Html$button,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Events$onClick(_dummy$dummy$RobotPuzzle$Toggle),
-					_1: {ctor: '[]'}
+					_0: _elm_lang$html$Html_Attributes$disabled(!correct),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Events$onClick(_dummy$dummy$RobotPuzzle$Toggle),
+						_1: {ctor: '[]'}
+					}
 				},
 				{
 					ctor: '::',
@@ -11260,7 +11276,7 @@ var _dummy$dummy$RobotPuzzle$view = function (model) {
 var _dummy$dummy$RobotPuzzle$Idle = {ctor: 'Idle'};
 var _dummy$dummy$RobotPuzzle$Step = {ctor: 'Step'};
 var _dummy$dummy$RobotPuzzle$takeStep = F2(
-	function (model, _p10) {
+	function (model, _p11) {
 		return model.run ? _dummy$dummy$RobotPuzzle$Step : _dummy$dummy$RobotPuzzle$Idle;
 	});
 var _dummy$dummy$RobotPuzzle$subscriptions = function (model) {

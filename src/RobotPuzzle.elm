@@ -81,17 +81,26 @@ update message model =
             ( model, Cmd.none )
 
         Toggle ->
-            let
-                next_run =
-                    not model.run
+            case model.program of
+                Just program ->
+                    let
+                        next_run =
+                            not model.run
 
-                next_state =
-                    if not next_run then
-                        Maybe.map (load model.initial) model.program
-                    else
-                        model.state
-            in
-                ( { model | run = not model.run, state = next_state }, Cmd.none )
+                        next_state =
+                            if not next_run then
+                                Maybe.map (load model.initial) model.program
+                            else
+                                model.state
+                    in
+                        ( { model | run = not model.run, state = next_state }, Cmd.none )
+
+                Nothing ->
+                    let
+                        next_run =
+                            False
+                    in
+                        ( { model | run = next_run }, Cmd.none )
 
         UpdateSource source ->
             let
@@ -159,7 +168,11 @@ view model =
                 ">"
     in
         Html.div []
-            [ Html.button [ Event.onClick Toggle ] [ Html.text runText ]
+            [ Html.button
+                [ Attribute.disabled (not correct)
+                , Event.onClick Toggle
+                ]
+                [ Html.text runText ]
             , Html.span
                 [ Attribute.classList
                     [ ( "correct", correct )
