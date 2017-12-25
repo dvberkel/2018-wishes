@@ -81,19 +81,19 @@ update message model =
             ( model, Cmd.none )
 
         Toggle ->
-            case model.program of
-                Just program ->
-                    let
-                        next_run =
-                            not model.run
+            case model.state of
+                Just state ->
+                    if model.run then
+                        let
+                            next_run =
+                                False
 
-                        next_state =
-                            if not next_run then
+                            next_state =
                                 Maybe.map (load model.initial) model.program
-                            else
-                                model.state
-                    in
-                        ( { model | run = not model.run, state = next_state }, Cmd.none )
+                        in
+                            ( { model | run = next_run, state = next_state }, Cmd.none )
+                    else
+                        ( { model | run = not model.run }, Cmd.none )
 
                 Nothing ->
                     let
@@ -113,7 +113,7 @@ update message model =
                             Nothing
 
                 state =
-                    Maybe.map (load model.initial) model.program
+                    Maybe.map (load model.initial) program
             in
                 ( { model | run = False, source = source, program = program, state = state }, Cmd.none )
 

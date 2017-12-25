@@ -11088,20 +11088,30 @@ var _dummy$dummy$RobotPuzzle$update = F2(
 			case 'Idle':
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'Toggle':
-				var _p5 = model.program;
+				var _p5 = model.state;
 				if (_p5.ctor === 'Just') {
-					var next_run = !model.run;
-					var next_state = (!next_run) ? A2(
-						_elm_lang$core$Maybe$map,
-						_dummy$dummy$Robot$load(model.initial),
-						model.program) : model.state;
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							model,
-							{run: !model.run, state: next_state}),
-						_1: _elm_lang$core$Platform_Cmd$none
-					};
+					if (model.run) {
+						var next_state = A2(
+							_elm_lang$core$Maybe$map,
+							_dummy$dummy$Robot$load(model.initial),
+							model.program);
+						var next_run = false;
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{run: next_run, state: next_state}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					} else {
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{run: !model.run}),
+							_1: _elm_lang$core$Platform_Cmd$none
+						};
+					}
 				} else {
 					var next_run = false;
 					return {
@@ -11114,10 +11124,6 @@ var _dummy$dummy$RobotPuzzle$update = F2(
 				}
 			case 'UpdateSource':
 				var _p7 = _p4._0;
-				var state = A2(
-					_elm_lang$core$Maybe$map,
-					_dummy$dummy$Robot$load(model.initial),
-					model.program);
 				var program = function () {
 					var _p6 = _dummy$dummy$Parser$compile(_p7);
 					if (_p6.ctor === 'Ok') {
@@ -11126,6 +11132,10 @@ var _dummy$dummy$RobotPuzzle$update = F2(
 						return _elm_lang$core$Maybe$Nothing;
 					}
 				}();
+				var state = A2(
+					_elm_lang$core$Maybe$map,
+					_dummy$dummy$Robot$load(model.initial),
+					program);
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
