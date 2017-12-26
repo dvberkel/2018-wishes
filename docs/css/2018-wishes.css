@@ -3,6 +3,10 @@ html {
     --robot-cell-size: 13px;
 }
 
+body a, body a:hover, body a:visited {
+    color: green;
+}
+
 body {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
