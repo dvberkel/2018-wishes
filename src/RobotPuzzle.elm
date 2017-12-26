@@ -11,7 +11,7 @@ import Parser exposing (compile)
 
 main =
     Html.program
-        { init = init "LL[5M]" ( 1, 1 ) North
+        { init = init "[5M]" ( 1, 1 ) North
         , update = update
         , view = view
         , subscriptions = subscriptions

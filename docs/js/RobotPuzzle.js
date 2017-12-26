@@ -11299,7 +11299,7 @@ var _dummy$dummy$RobotPuzzle$main = _elm_lang$html$Html$program(
 	{
 		init: A3(
 			_dummy$dummy$RobotPuzzle$init,
-			'LL[5M]',
+			'[5M]',
 			{ctor: '_Tuple2', _0: 1, _1: 1},
 			_dummy$dummy$Robot$North),
 		update: _dummy$dummy$RobotPuzzle$update,
