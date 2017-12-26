@@ -49,7 +49,7 @@ div.combination-lock .digits {
 }
 
 div.combination-lock .digits .digit-control {
-    background-color: yellow;
+    background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -64,7 +64,7 @@ div.combination-lock .digits .digit-control:first-child {
 div.combination-lock .digits .digit-control .digit {
     display: inline-block;
     width: 100%;
-    background-color: blue;
+    background-color: black;
     color: white;
     font-size: 250%;
     text-align: center;

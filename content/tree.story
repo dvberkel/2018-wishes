@@ -1,9 +1,9 @@
-Je stapt de deur door. De deur begint zich automatisch weer te sluiten. De klink
+Je stapt de deur door. De deur begint zich automatisch weer te sluiten. De klik
 van het slot doet jou realiseren dat jij niet uit deze kamer komt als jij de
 puzzel niet oplost.
 
 De kamer is leeg op de uitgang na. Door die deur ligt jou vrijheid. Op de deur
-vind jij een plakaat waarop te lezen valt.
+vind jij een plakaat waarop te lezen staat.
 
 ```
 De familie van Berkel staat op een rij van links naar rechts, van oud naar jong.

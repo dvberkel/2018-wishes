@@ -1,4 +1,9 @@
-# Nieuwjaars wens 2018
+# Beste wensen voor het nieuwe jaar!
 
-Wij wensen jou een heel erg fijn 2018. Wij hopen dat het veel fijne dingen
-brengt net als dit [choose-your-own adventure](introduction.html).
+Wij wensen jou een heel erg geweldig 2018. Wij hopen dat het veel leuke en fijne
+dingen brengt. Hopelijk komen de uitdagingen die jij aan wilt gaan op jouw pad.
+Wij hopen dat jij deze uitdaging ook aan durft.
+
+---
+
+* [Ga de uitdaging aan en stap door de deur.](introduction)

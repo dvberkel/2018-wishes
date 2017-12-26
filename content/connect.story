@@ -5,4 +5,6 @@ Je bent blij dat het niet jouw vinger was.
 
 Met de gaten verbonden hoor jij een zachte klik en de deur springt open.
 
+---
+
 * [Ga naar de volgende ruimte.](combination-lock)

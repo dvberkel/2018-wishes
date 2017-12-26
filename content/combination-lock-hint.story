@@ -8,6 +8,14 @@ nog niet was opgevallen was een reeks van cijfers op de muur.
 * 12051980
 * 11122015
 
+Op het plakaat staat nog steeds
+
+
+```
+Wat is de som van de leeftijden in jaren van de familie van Berkel op 31
+december 2017?
+```
+
 ---
 
 ---
