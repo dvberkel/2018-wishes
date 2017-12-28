@@ -8,7 +8,7 @@ nog niet was opgevallen was een reeks van cijfers op de muur.
 * 12051980
 * 11122015
 
-Op het plakaat staat nog steeds
+Op het plakkaat staat nog steeds
 
 
 ```

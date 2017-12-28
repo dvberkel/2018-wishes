@@ -27,6 +27,10 @@ body {
     padding: 0;
 }
 
+code {
+    font-size: 171%;
+}
+
 section.content {
     grid-column-start: 2;
     grid-column-end: 3;

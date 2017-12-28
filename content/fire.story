@@ -6,7 +6,8 @@ in het midden van de ruimte staat een hoge tafel. Het tafelblad is een
 plexiglazen plaat. Erdoorheen zie je een doolhof. In een hoek van de doolhof
 staat een poppetje. In een andere hoek bevind zich een drukknop.
 
-Wanneer jij rond de tafel loopt vind jij een plakaat. Er staat geschreven:
+Wanneer jij rond de tafel loopt vind jij een plakkaat. Er staat geschreven:
+
 
 ```
 De robot laat zich programmeren met de volgende commandos
@@ -15,7 +16,7 @@ De robot laat zich programmeren met de volgende commandos
 * 'L' en 'R', hierdoor draait de robot respectievelijk naar links en naar
   rechts.
 
-Wanneer de robot tegen een obstakel bots, draait het als beveiliging naar links.
+Wanneer de robot tegen een obstakel botst, draait het als beveiliging naar links.
 Verder kun jij de robot een reeks van commandos een aantal keer laten herhalen.
 Je doet dit door een blokhaak '[' in te voeren, gevolgd door een getal en de
 reeks van commandos die herhaald dienen te worden en afgesloten met de blokhaak
@@ -23,6 +24,7 @@ reeks van commandos die herhaald dienen te worden en afgesloten met de blokhaak
 
 Bijvoorbeeld: de instructies `[5M]` laat de robot vijf keer vooruit bewegen.
 ```
+
 
 Vind jij een weg voor de robot naar de drukknop?
 

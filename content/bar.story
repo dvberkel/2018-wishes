@@ -7,5 +7,5 @@ dit een goed idee?
 
 ---
 
-* [Stoot de staaf in de sirene](certain-bar)
-* [Haal de kabels uit de sirene](cables)
+* [Stoot de staaf in de sirene.](certain-bar)
+* [Haal de kabels uit de sirene.](cables)
