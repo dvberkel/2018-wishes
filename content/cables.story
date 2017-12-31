@@ -6,4 +6,4 @@ Het geluid houdt echter onverstoord aan.
 
 ---
 
-* [Stoot de metalen staaf in de sirene](certain-bar)
+* [Stoot de metalen staaf in de sirene.](certain-bar)
